@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     marginTop: '65%',
     fontSize: 64,
     fontWeight: 'bold',
-    color: 'orange',
+    color: '#6666ff',
   },
 });

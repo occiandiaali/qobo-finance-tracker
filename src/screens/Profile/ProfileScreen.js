@@ -3,7 +3,7 @@ import React from 'react';
 
 const ProfileScreen = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>User Profile Screen</Text>
     </View>
   );
@@ -11,4 +11,10 @@ const ProfileScreen = () => {
 
 export default ProfileScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'd9e7fc',
+  },
+});

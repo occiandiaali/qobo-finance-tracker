@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {
   Alert,
   Button,
+  ImageBackground,
   Platform,
   Pressable,
   ScrollView,
@@ -56,16 +57,7 @@ const TransactionScreen = ({navigation, theme}) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
-    //  setDateShow(Platform.OS === 'ios');
-    // setTransactionDate(currentDate);
   };
-
-  // const showMode = currentMode => {
-  //   if (Platform.OS === 'android') {
-  //     setShow(false);
-  //   }
-  //   setMode(currentMode);
-  // };
 
   const showDatePicker = () => {
     setShow(true);
@@ -84,14 +76,22 @@ const TransactionScreen = ({navigation, theme}) => {
   const {colors, fonts} = theme;
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* <Text>TransactionScreen</Text> */}
+    <ImageBackground
+      source={{
+        //uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1gCbld6bch7MjYd5jHUhfn9StqDMMdQ4qkg&usqp=CAU',
+        //uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO-5F_JrtgVh3J4oVy8ZpqxFDkiGf3aaAylg&usqp=CAU',
+        // uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO7JejWoZc-3TH9krKkFh1n-ABafVimrU34Q&usqp=CAU',
+        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
+      }}
+      style={{
+        flex: 1,
+      }}>
+      {/* <SafeAreaView style={styles.container}> */}
       <View style={styles.content}>
         <FieldContainer>
-          {/* <Text style={{fontSize: 24}}>Date</Text> */}
           <View style={styles.selectDate}>
             <Pressable onPress={showDatePicker}>
-              <Text style={{fontSize: 21, fontWeight: 'bold'}}>
+              <Text style={{color: '#000', fontSize: 21, fontWeight: 'bold'}}>
                 {date.toDateString().slice(4)}
               </Text>
             </Pressable>
@@ -105,57 +105,59 @@ const TransactionScreen = ({navigation, theme}) => {
             onChange={onDateChange}
           />
         )}
-        <FieldContainer>
-          <Text style={{fontSize: 21, color: colors.white}}>Type</Text>
-          <DropDown
-            mode={'flat'}
-            value={transactionType}
-            setValue={setTransactionType}
-            list={transactionTypes}
-            visible={showTransactionTypeDropDown}
-            showDropDown={() => setShowTransactionTypeDropDown(true)}
-            onDismiss={() => setShowTransactionTypeDropDown(false)}
-            inputProps={{
-              right: <TextInput.Icon name={'menu-down'} />,
-              theme: {roundness: 0},
-              style: styles.dropdown,
-            }}
-          />
-        </FieldContainer>
-        <FieldContainer>
-          <Text style={{fontSize: 21, color: colors.white}}>Summary</Text>
-          <TextInput
-            mode="flat"
-            underlineColor={colors.white}
-            theme={{roundness: 0}}
-            style={styles.input}
-            onChangeText={text => setSummary(text)}
-            value={summary}
-            placeholder="brief description..."
-          />
-        </FieldContainer>
-        <FieldContainer>
-          <Text style={{fontSize: 21, color: colors.white}}>Amount</Text>
-          <TextInput
-            mode="flat"
-            underlineColor={colors.white}
-            theme={{roundness: 0}}
-            style={styles.input}
-            onChangeText={text => setAmount(text)}
-            value={amount}
-            placeholder="amount..."
-            keyboardType="number-pad"
-          />
-        </FieldContainer>
-        <FieldContainer>
-          <View style={styles.saveButton}>
-            <Pressable onPress={showSuccessScreen}>
-              <Text style={{fontSize: 21, fontWeight: 'bold'}}>Save</Text>
-            </Pressable>
-          </View>
-        </FieldContainer>
+        <View style={{padding: 12}}>
+          <FieldContainer>
+            <Text style={{fontSize: 21, color: '#fff'}}>Type</Text>
+            <DropDown
+              mode={'flat'}
+              value={transactionType}
+              setValue={setTransactionType}
+              list={transactionTypes}
+              visible={showTransactionTypeDropDown}
+              showDropDown={() => setShowTransactionTypeDropDown(true)}
+              onDismiss={() => setShowTransactionTypeDropDown(false)}
+              inputProps={{
+                right: <TextInput.Icon name={'menu-down'} />,
+                theme: {roundness: 0},
+                style: styles.dropdown,
+              }}
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <Text style={{fontSize: 21, color: '#fff'}}>Summary</Text>
+            <TextInput
+              mode="flat"
+              underlineColor={colors.gray}
+              theme={{roundness: 0}}
+              style={styles.input}
+              onChangeText={text => setSummary(text)}
+              value={summary}
+              placeholder="brief description..."
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <Text style={{fontSize: 21, color: '#fff'}}>Amount</Text>
+            <TextInput
+              mode="flat"
+              underlineColor={colors.gray}
+              theme={{roundness: 0}}
+              style={styles.input}
+              onChangeText={text => setAmount(text)}
+              value={amount}
+              placeholder="amount..."
+              keyboardType="number-pad"
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <Text onPress={showSuccessScreen} style={styles.saveButton}>
+              Save
+            </Text>
+          </FieldContainer>
+        </View>
       </View>
-    </SafeAreaView>
+
+      {/* </SafeAreaView> */}
+    </ImageBackground>
   );
 };
 
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
-    backgroundColor: '#4b0082',
+    backgroundColor: '#d9e7fc', //'white', //'#4b0082',
   },
   content: {
     marginTop: '25%',
@@ -175,20 +177,23 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   saveButton: {
-    width: 220,
+    width: 250,
     height: 50,
     borderRadius: 20,
-    backgroundColor: 'orange',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#6666ff',
+    textAlign: 'center',
+    textAlignVertical: 'center',
     marginTop: 28,
-    marginLeft: -32,
+    marginLeft: -48,
+    color: '#000',
+    fontSize: 21,
+    fontWeight: 'bold',
   },
   selectDate: {
     width: 220, //180,
     height: 50, //40,
     borderRadius: 20,
-    backgroundColor: 'orange',
+    backgroundColor: '#6666ff',
     // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
