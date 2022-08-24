@@ -31,8 +31,9 @@ const chartConfig = {
 };
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
-const LandingScreen = ({theme}) => {
+const LandingScreen = ({theme, navigation}) => {
   const [byTransactionTypes, setByTransactionTypes] = useState([]);
   const RenderBSContent = () => (
     <View
@@ -180,6 +181,9 @@ const LandingScreen = ({theme}) => {
       legendFontSize: 12,
     },
   ];
+  const ribbon = {
+    uri: 'https://img.freepik.com/free-photo/isolated-red-badge-with-ribbon_125540-1053.jpg',
+  };
 
   return (
     <ImageBackground
@@ -189,8 +193,10 @@ const LandingScreen = ({theme}) => {
         //uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO7JejWoZc-3TH9krKkFh1n-ABafVimrU34Q&usqp=CAU',
         uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
       }}
+      resizeMode="cover"
       style={{
-        flex: 1,
+        // flex: 1,
+        height: '100%',
       }}>
       {/* <View style={styles.container}> */}
       {/* <View style={styles.pie}>
@@ -215,11 +221,22 @@ const LandingScreen = ({theme}) => {
           accessor={'value'}
           backgroundColor={'transparent'}
           paddingLeft={'9'}
-          center={[10, 10]}
+          center={[10, 4]}
         />
         <Text style={{color: 'white', fontSize: 21, alignSelf: 'center'}}>
-          Monthly overview
+          August overview
         </Text>
+        <View style={{alignSelf: 'flex-end'}}>
+          <Image
+            source={ribbon}
+            style={{
+              height: 70,
+              width: 70,
+              borderRadius: 35,
+              transform: [{rotate: '20deg'}],
+            }}
+          />
+        </View>
       </View>
       <View
         style={{
@@ -231,12 +248,31 @@ const LandingScreen = ({theme}) => {
           width: 55,
           height: 55,
           borderRadius: 27,
-          backgroundColor: 'yellow',
+          // backgroundColor: 'yellow',
         }}>
-        <Icon name="rocket" size={35} color="#900" />
+        {/* <Icon name="rocket" size={35} color="#900" /> */}
+
+        {/* <Image
+          source={ribbon}
+          style={{
+            height: 70,
+            width: 70,
+            borderRadius: 35,
+            transform: [{rotate: '20deg'}],
+          }}
+        /> */}
       </View>
-      <Text style={styles.bar}>Bar Chart</Text>
-      <Text style={styles.line}>Line Chart</Text>
+
+      <Text
+        onPress={() => navigation.navigate('Chart Overview')}
+        style={styles.bar}>
+        Charts
+      </Text>
+      <Text
+        style={styles.line}
+        onPress={() => navigation.navigate('Learning Central')}>
+        Learning Central
+      </Text>
       <Text onPress={() => sheetRef.current.open()} style={styles.showNews}>
         News
       </Text>
@@ -278,7 +314,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#6666ff',
+    backgroundColor: '#7777ff',
     textAlign: 'center',
     textAlignVertical: 'center',
     marginTop: '15%', //28,
@@ -308,7 +344,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#6666ff',
+    backgroundColor: '#5555ff',
     textAlign: 'center',
     textAlignVertical: 'center',
     marginTop: 28,
@@ -340,7 +376,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#2222ff', //'#6666ff',
+    backgroundColor: '#3333ff', //'#6666ff',
     textAlign: 'center',
     textAlignVertical: 'center',
     marginTop: 28,

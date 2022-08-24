@@ -18,6 +18,13 @@ import FieldContainer from '../../components/FieldContainer';
 import FieldLabel from '../../components/FieldLabel';
 import DropDown from 'react-native-paper-dropdown';
 
+import {
+  getDBConnection,
+  createCategoriesTable,
+  createCategory,
+  getCategories,
+} from '../../../data/db-service';
+
 // const TransactionTypes = Object.freeze({
 //   Expense: Symbol('expense'),
 //   Income: Symbol('income'),
@@ -68,12 +75,36 @@ const TransactionScreen = ({navigation, theme}) => {
     if (amount === '') {
       Alert.alert('Warning!!', 'Transaction cannot be saved!');
     } else {
+      loadDataCallback();
+      console.log(`Type: ${JSON.stringify(transactionType)}`);
+      console.log(`Summary: ${summary}`);
+      console.log(`Amt: ${amount}`);
+      console.log(`Date: ${date}`);
+      setSummary('');
       setAmount('');
       navigation.navigate('Notification');
     }
   };
 
   const {colors, fonts} = theme;
+
+  const loadDataCallback = useCallback(async () => {
+    try {
+      const db = await getDBConnection();
+      await createCategoriesTable(db);
+      await createCategory(db, transactionType);
+      const storedCategories = await getCategories(db);
+      if (storedCategories.length) {
+        setTransactionType(storedCategories);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [transactionType]);
+
+  // useEffect(() => {
+  //   loadDataCallback();
+  // }, [loadDataCallback]);
 
   return (
     <ImageBackground
@@ -96,15 +127,16 @@ const TransactionScreen = ({navigation, theme}) => {
               </Text>
             </Pressable>
           </View>
+          {show && (
+            <DateTimePicker
+              value={date}
+              mode={mode}
+              is24Hour={true}
+              onChange={onDateChange}
+            />
+          )}
         </FieldContainer>
-        {show && (
-          <DateTimePicker
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            onChange={onDateChange}
-          />
-        )}
+
         <View style={{padding: 12}}>
           <FieldContainer>
             <Text style={{fontSize: 21, color: '#fff'}}>Type</Text>
@@ -123,6 +155,7 @@ const TransactionScreen = ({navigation, theme}) => {
               }}
             />
           </FieldContainer>
+
           <FieldContainer>
             <Text style={{fontSize: 21, color: '#fff'}}>Summary</Text>
             <TextInput
