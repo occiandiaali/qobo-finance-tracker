@@ -1,5 +1,19 @@
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+
+const styles = StyleSheet.create({
+  avatar: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginTop: '15%',
+  },
+  container: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'd9e7fc',
+  },
+});
 
 const ProfileScreen = () => {
   return (
@@ -11,20 +25,25 @@ const ProfileScreen = () => {
         flex: 1,
       }}>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{fontSize: 34, color: '#f00', marginVertical: '25%'}}>
-          Hello, User!
-        </Text>
+        <Image
+          source={{
+            uri: 'https://img.freepik.com/free-icon/female-user-add-button_318-39502.jpg',
+          }}
+          style={styles.avatar}
+        />
+        <Text style={{fontSize: 34, color: '#fff'}}>Hello, User!</Text>
+        <View
+          style={{
+            width: 360,
+            height: 320,
+            marginTop: 16,
+            borderRadius: 20,
+            backgroundColor: '#9999ff',
+          }}
+        />
       </View>
     </ImageBackground>
   );
 };
 
 export default ProfileScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    width: '100%',
-    backgroundColor: 'd9e7fc',
-  },
-});

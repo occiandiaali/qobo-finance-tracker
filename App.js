@@ -195,14 +195,26 @@ const HomeTabs = () => (
         if (route.name === 'Home') {
           iconName = focused ? 'home' : 'home-outline';
         } else if (route.name === 'Create') {
-          iconName = focused ? 'add-circle' : 'add-circle-outline';
+          // iconName = focused ? 'add-circle' : 'add-circle-outline';
+          iconName = 'add-circle';
         } else if (route.name === 'Profile') {
           iconName = focused ? 'person' : 'person-outline';
         }
-        return <Ionicons name={iconName} size={size} color={color} />;
+        return (
+          <Ionicons
+            style={
+              iconName === 'add-circle'
+                ? {fontSize: 54, paddingBottom: 18, position: 'absolute'}
+                : null
+            }
+            name={iconName}
+            size={size}
+            color={color}
+          />
+        );
       },
       // tabBarActiveTintColor: '#6666ff',
-      // tabBarInactiveTintColor: 'gray',
+      // tabBarInactiveTintColor: '#9999ff',
       tabBarActiveTintColor: '#2222ff',
       tabBarInactiveTintColor: '#fff',
     })}>

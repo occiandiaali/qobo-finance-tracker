@@ -10,6 +10,8 @@ import {
   View,
 } from 'react-native';
 
+import CustomDropDown from '../../components/CustomDropDown';
+
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {TextInput, withTheme} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -47,8 +49,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     marginTop: 28,
-    marginLeft: -48,
-    color: '#000',
+    marginLeft: -64, //-48,
+    color: '#fff',
     fontSize: 21,
     fontWeight: 'bold',
   },
@@ -94,6 +96,7 @@ const CreateEntryScreen = ({navigation, theme}) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [summary, setSummary] = useState('');
   const [amount, setAmount] = useState(0.0);
+  const [selected, setSelected] = useState('');
 
   const onDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || transactionDate;
@@ -129,6 +132,7 @@ const CreateEntryScreen = ({navigation, theme}) => {
         setSummary('');
         setTransactionType(null);
         setAmount(0.0);
+        setSelected('');
 
         navigation.navigate('Notification');
       }
@@ -188,7 +192,7 @@ const CreateEntryScreen = ({navigation, theme}) => {
         <FieldContainer>
           <View style={styles.selectDate}>
             <Pressable onPress={showDatePicker}>
-              <Text style={{color: '#000', fontSize: 21, fontWeight: 'bold'}}>
+              <Text style={{color: '#fff', fontSize: 21, fontWeight: 'bold'}}>
                 {transactionDate.toDateString().slice(4)}
               </Text>
             </Pressable>
@@ -207,7 +211,7 @@ const CreateEntryScreen = ({navigation, theme}) => {
         <View style={{padding: 8, marginTop: '10%'}}>
           <FieldContainer>
             {/* <Text style={{fontSize: 21, color: '#fff'}}>Type</Text> */}
-            <DropDown
+            {/* <DropDown
               mode={'flat'}
               label={'Category'}
               // mode={'outlined'}
@@ -222,6 +226,11 @@ const CreateEntryScreen = ({navigation, theme}) => {
                 theme: {roundness: 0},
                 style: styles.dropdown,
               }}
+            /> */}
+            <CustomDropDown
+              label={!selected ? 'Select category' : selected.label}
+              data={transactionTypes}
+              onSelect={setTransactionType}
             />
           </FieldContainer>
 
@@ -234,7 +243,7 @@ const CreateEntryScreen = ({navigation, theme}) => {
               style={styles.input}
               onChangeText={text => setSummary(text)}
               value={summary}
-              placeholder="Description..."
+              placeholder="Description"
             />
           </FieldContainer>
           <FieldContainer>
@@ -246,7 +255,7 @@ const CreateEntryScreen = ({navigation, theme}) => {
               style={styles.input}
               onChangeText={text => setAmount(text)}
               value={amount}
-              placeholder="Amount..."
+              placeholder="Amount"
               keyboardType="number-pad"
             />
           </FieldContainer>
