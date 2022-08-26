@@ -264,14 +264,14 @@ const LandingScreen = ({theme, navigation}) => {
       </View>
 
       <Text
-        onPress={() => navigation.navigate('Chart Overview')}
+        onPress={() => navigation.navigate('Bar Charts')}
         style={styles.bar}>
-        Charts
+        Bar Charts
       </Text>
       <Text
         style={styles.line}
-        onPress={() => navigation.navigate('Learning Central')}>
-        Learning Central
+        onPress={() => navigation.navigate('Line Charts')}>
+        Line Charts
       </Text>
       <Text onPress={() => sheetRef.current.open()} style={styles.showNews}>
         News

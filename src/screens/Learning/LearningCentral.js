@@ -15,7 +15,7 @@ const img = {
 const LearningCentral = ({theme, navigation}) => {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={{paddingTop: 8}}>
+      <View style={{paddingTop: 32}}>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
           <View
             style={{

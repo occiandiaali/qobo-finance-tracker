@@ -49,7 +49,9 @@ function BarChartComponent({title, fillShadowGradient, data}) {
         width={screenWidth}
         height={220}
         chartConfig={chartConfig}
-        showBarTops={false}
+        showValuesOnTopOfBars={true}
+        withHorizontalLabels={false}
+        //showBarTops={false}
       />
     </View>
   );
