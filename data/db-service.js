@@ -235,8 +235,12 @@ export const getIncomeGroupedByMonth = async db => {
         const item = result.rows.item(index);
 
         transactions.push({
+          name: 'Income',
           value: item.total,
           label: item.monthYear,
+          color: paletteTwo[index],
+          legendFontColor: '#fff',
+          legendFontSize: 12,
         });
       }
     });
@@ -264,8 +268,12 @@ export const getSavingsGroupedByMonth = async db => {
         const item = result.rows.item(index);
 
         transactions.push({
+          name: 'Savings',
           value: item.total,
           label: item.monthYear,
+          color: paletteThree[index],
+          legendFontColor: '#fff',
+          legendFontSize: 12,
         });
       }
     });
@@ -293,8 +301,12 @@ export const getInvestmentsGroupedByMonth = async db => {
         const item = result.rows.item(index);
 
         transactions.push({
+          name: 'Investment',
           value: item.total,
           label: item.monthYear,
+          color: paletteFour[index],
+          legendFontColor: '#fff',
+          legendFontSize: 12,
         });
       }
     });
@@ -322,8 +334,12 @@ export const getExpenseGroupedByMonth = async db => {
         const item = result.rows.item(index);
 
         transactions.push({
+          name: 'Expense',
           value: item.total,
           label: item.monthYear,
+          color: paletteFive[index],
+          legendFontColor: '#fff', //paletteFive[index],
+          legendFontSize: 12,
         });
       }
     });

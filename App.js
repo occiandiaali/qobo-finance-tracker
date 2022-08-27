@@ -57,9 +57,13 @@ const HomeTabs = () => (
         let iconName;
         if (route.name === 'Home') {
           iconName = focused ? 'home' : 'home-outline';
+        } else if (route.name === 'Stats') {
+          iconName = focused ? 'stats-chart' : 'stats-chart-outline';
         } else if (route.name === 'Create') {
           // iconName = focused ? 'add-circle' : 'add-circle-outline';
           iconName = 'add-circle';
+        } else if (route.name === 'News') {
+          iconName = focused ? 'newspaper' : 'newspaper-outline';
         } else if (route.name === 'Learning') {
           iconName = focused ? 'book' : 'book-outline';
         }
@@ -88,7 +92,17 @@ const HomeTabs = () => (
     />
     <Tab.Screen
       options={{headerShown: false}}
+      name="Stats"
+      component={BarChartScreen}
+    />
+    <Tab.Screen
+      options={{headerShown: false}}
       name="Create"
+      component={CreateEntryScreen}
+    />
+    <Tab.Screen
+      options={{headerShown: false}}
+      name="News"
       component={CreateEntryScreen}
     />
     <Tab.Screen

@@ -104,38 +104,38 @@ const BarChartScreen = ({theme}) => {
   const hasSavingsInvestment =
     monthlySavings.length > 0 || monthlyInvestments.length > 0;
 
-  const datasets = [];
+  // const datasets = [];
 
-  if (monthlyExpense.length > 0) {
-    datasets.push({
-      data: monthlyExpense.map(item => item.value),
-      color: (opacity = 1) => '#003049',
-      strokeWidth: 2,
-    });
-  }
-  if (monthlyIncome.length > 0) {
-    datasets.push({
-      data: monthlyIncome.map(item => item.value),
-      color: (opacity = 1) => '#003049',
-      strokeWidth: 2,
-    });
-  }
+  // if (monthlyExpense.length > 0) {
+  //   datasets.push({
+  //     data: monthlyExpense.map(item => item.value),
+  //     color: (opacity = 1) => '#003049',
+  //     strokeWidth: 2,
+  //   });
+  // }
+  // if (monthlyIncome.length > 0) {
+  //   datasets.push({
+  //     data: monthlyIncome.map(item => item.value),
+  //     color: (opacity = 1) => '#003049',
+  //     strokeWidth: 2,
+  //   });
+  // }
 
-  if (hasMonthlySavings) {
-    datasets.push({
-      data: monthlySavings.map(item => item.value),
-      color: (opacity = 1) => '#003049',
-      strokeWidth: 2,
-    });
-  }
+  // if (hasMonthlySavings) {
+  //   datasets.push({
+  //     data: monthlySavings.map(item => item.value),
+  //     color: (opacity = 1) => '#003049',
+  //     strokeWidth: 2,
+  //   });
+  // }
 
-  if (hasMonthlyInvestments) {
-    datasets.push({
-      data: monthlyInvestments.map(item => item.value),
-      color: (opacity = 1) => '#003049',
-      strokeWidth: 2,
-    });
-  }
+  // if (hasMonthlyInvestments) {
+  //   datasets.push({
+  //     data: monthlyInvestments.map(item => item.value),
+  //     color: (opacity = 1) => '#003049',
+  //     strokeWidth: 2,
+  //   });
+  // }
 
   const label1 = monthlySavings.map(item => {
     return item.label;

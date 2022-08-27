@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {
   Alert,
+  Button,
   ImageBackground,
   Platform,
   Pressable,
@@ -38,10 +39,21 @@ const styles = StyleSheet.create({
     height: 43,
     marginTop: 5,
   },
-  input: {
-    backgroundColor: '#d7d9d7',
+  disabledCreate: {
+    width: 250,
+    height: 50,
+    borderRadius: 20,
+    backgroundColor: '#9099a3',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    marginTop: 28,
+    alignSelf: 'center',
+    //  marginLeft: -64, //-48,
+    color: '#fff',
+    fontSize: 21,
+    fontWeight: 'bold',
   },
-  saveButton: {
+  enabledCreate: {
     width: 250,
     height: 50,
     borderRadius: 20,
@@ -49,10 +61,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     marginTop: 28,
-    marginLeft: -64, //-48,
+    alignSelf: 'center',
+    //  marginLeft: -64, //-48,
     color: '#fff',
     fontSize: 21,
     fontWeight: 'bold',
+  },
+  input: {
+    backgroundColor: '#d7d9d7',
   },
   selectDate: {
     width: 220, //180,
@@ -62,7 +78,8 @@ const styles = StyleSheet.create({
     // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '50%', //'57%',
+    alignSelf: 'center',
+    //  marginLeft: '50%', //'57%',
   },
 });
 
@@ -87,7 +104,7 @@ const transactionTypes = [
 
 const CreateEntryScreen = ({navigation, theme}) => {
   const [transactionDate, setTransactionDate] = useState(
-    new Date('Jan 01 2022'),
+    new Date(), // new Date('Jan 01 2022'),
   );
   const [dateMode, setDateMode] = useState('date');
   const [dateShow, setDateShow] = useState(false);
@@ -113,8 +130,9 @@ const CreateEntryScreen = ({navigation, theme}) => {
 
   const createTransactionAction = useCallback(async () => {
     try {
-      if (transactionType === null) {
-        Alert.alert('Warning!', 'Select a category');
+      // if (transactionType === null && amount < 1) {
+      if (!canCreate) {
+        Alert.alert('Warning!', 'Input at least category and amount');
       } else {
         setEventLoading(true);
         const db = await getDBConnection();
@@ -139,7 +157,14 @@ const CreateEntryScreen = ({navigation, theme}) => {
     } catch (error) {
       console.log(error);
     }
-  }, [transactionDate, summary, transactionType, amount, navigation]);
+  }, [
+    canCreate,
+    transactionDate,
+    summary,
+    transactionType,
+    amount,
+    navigation,
+  ]);
 
   const loadDBCallback = useCallback(async () => {
     try {
@@ -177,6 +202,7 @@ const CreateEntryScreen = ({navigation, theme}) => {
   //   };
 
   const {colors, fonts} = theme;
+  const canCreate = amount > 0 && transactionType !== null;
 
   return (
     <ImageBackground
@@ -260,7 +286,9 @@ const CreateEntryScreen = ({navigation, theme}) => {
             />
           </FieldContainer>
           <FieldContainer>
-            <Text onPress={createTransactionAction} style={styles.saveButton}>
+            <Text
+              onPress={createTransactionAction}
+              style={!canCreate ? styles.disabledCreate : styles.enabledCreate}>
               {createTransactionText}
             </Text>
           </FieldContainer>

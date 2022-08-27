@@ -19,6 +19,16 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {LineChart, PieChart} from 'react-native-chart-kit';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import {
+  getDBConnection,
+  createTransactionsTable,
+  getTransactionsGroupedByTransactionType,
+  getExpenseGroupedByMonth,
+  getIncomeGroupedByMonth,
+  getSavingsGroupedByMonth,
+  getInvestmentsGroupedByMonth,
+} from '../../../data/db-service';
+
 const chartConfig = {
   backgroundGradientFrom: '#f2f2f2', //'#b3b3ff', //'#1E2923',
   backgroundGradientFromOpacity: 0,
@@ -34,90 +44,178 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 const LandingScreen = ({theme, navigation}) => {
-  const [byTransactionTypes, setByTransactionTypes] = useState([]);
-  const RenderBSContent = () => (
-    <View
-      style={{
-        backgroundColor: 'white',
-        padding: 16,
-        height: 450,
-      }}>
-      <Text>Swipe down to close</Text>
-    </View>
-  );
-
   const sheetRef = React.useRef(null);
-  const snapPoints = React.useMemo(() => ['25%', '40%', '80%'], []);
-  const handleSheetChanges = React.useCallback(index => {
-    console.log('handle sheet changes ', index);
+
+  const [apiData, setApiData] = useState([]);
+  const [monthlyIncome, setMonthlyIncome] = useState([]);
+  const [monthlyExpense, setMonthlyExpense] = useState([]);
+  const [monthlySavings, setMonthlySavings] = useState([]);
+  const [monthlyInvestments, setMonthlyInvestments] = useState([]);
+
+  const loadDataCallback = useCallback(async () => {
+    try {
+      const db = await getDBConnection();
+      await createTransactionsTable(db);
+      // const groupedByTransactionTypes =
+      //   await getTransactionsGroupedByTransactionType(db);
+      // if (groupedByTransactionTypes.length) {
+      //   setByTransactionTypes(groupedByTransactionTypes);
+      // }
+
+      const incomeMonth = await getIncomeGroupedByMonth(db);
+      if (incomeMonth) {
+        setMonthlyIncome(incomeMonth);
+      }
+
+      const expenseMonth = await getExpenseGroupedByMonth(db);
+      if (expenseMonth) {
+        setMonthlyExpense(expenseMonth);
+      }
+
+      const savingsMonth = await getSavingsGroupedByMonth(db);
+      if (savingsMonth) {
+        setMonthlySavings(savingsMonth);
+      }
+
+      const investmentMonth = await getInvestmentsGroupedByMonth(db);
+      if (investmentMonth) {
+        setMonthlyInvestments(investmentMonth);
+      }
+    } catch (error) {
+      console.error('transaction list err: ', error);
+    }
   }, []);
-  const handlePresent = React.useCallback(() => {
-    sheetRef.current.present();
+
+  useEffect(() => {
+    loadDataCallback();
+  }, [loadDataCallback]);
+
+  const hasMonthlyExpenses = monthlyExpense.length > 0;
+  const hasMonthlyIncome = monthlyIncome.length > 0;
+  const hasMonthlySavings = monthlySavings.length > 0;
+  const hasMonthlyInvestments = monthlyInvestments.length > 0;
+
+  const currentMonthData =
+    hasMonthlyExpenses ||
+    hasMonthlyIncome ||
+    hasMonthlySavings ||
+    hasMonthlyInvestments;
+
+  const [thisMonth, setThisMonth] = useState(1);
+  const [hasCurrentMonthData, setHasCurrentMonthData] =
+    useState(currentMonthData);
+  const [pieData, setPieData] = useState([]);
+
+  // const months = [
+  //   'January',
+  //   'February',
+  //   'March',
+  //   'April',
+  //   'May',
+  //   'June',
+  //   'July',
+  //   'August',
+  //   'September',
+  //   'October',
+  //   'November',
+  //   'December',
+  // ];
+  // const d = new Date();
+  // const monthName = months[d.getMonth()];
+
+  // const getMonthName = monthNum => {
+  //   const d = new Date();
+  //   d.setMonth(monthNum - 1);
+  //   const monthName = d.toLocaleString('default', {month: 'long'});
+  //   return monthName;
+  // };
+
+  useEffect(() => {
+    const allData = [
+      ...monthlyExpense,
+      ...monthlyIncome,
+      ...monthlyInvestments,
+      ...monthlySavings,
+    ];
+    const monthNames = new Map([
+      [1, 'January'],
+      [2, 'February'],
+      [3, 'March'],
+      [4, 'April'],
+      [5, 'May'],
+      [6, 'June'],
+      [7, 'July'],
+      [8, 'August'],
+      [9, 'September'],
+      [10, 'October'],
+      [11, 'November'],
+      [12, 'December'],
+    ]);
+
+    const d = new Date();
+    const month = d.getMonth();
+    //const month = d.getMonth() < 10 ? String(d.getMonth()).padStart();
+    const year = d.getFullYear();
+    const d1 = month < 10 ? `0${month + 1}-${year}` : `${month + 1}-${year}`;
+
+    const monthsArray = monthlyExpense.map(m => m.label);
+    const allMonthsArray = allData.map(data => data.label);
+    const allMonthsArrayValues = allData.map(data => data.value);
+
+    // setHasCurrentMonth(monthsArray.includes(d1));
+    // setHasCurrentMonthData(allMonthsArray.includes(1));
+    setHasCurrentMonthData(allMonthsArray.includes(d1));
+    console.log('d1: ', d1);
+    console.log('split-d1 ', d1.split('-')[0]);
+    console.log('typeof split-d1 ', typeof d1.split('-')[0]);
+    console.log('split-d1 num ', parseInt(d1.split('-')[0], 10));
+    console.log('typeof split-d1 ', typeof parseInt(d1.split('-')[0], 10));
+    console.log('Includes?: ', allMonthsArray.includes(d1));
+    setThisMonth(monthNames.get(parseInt(d1.split('-')[0], 10)));
+    // console.log('Get Month ', monthNames.get(8));
+    console.log('Month: ', monthsArray);
+    console.log('All Data: ', allData);
+    const chosen = allData.filter(v => v.label === d1);
+    setPieData(chosen);
+    console.log('All Chosen Values: ', chosen);
+  }, [monthlyExpense, monthlyIncome, monthlyInvestments, monthlySavings]);
+
+  const getData = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': '68d97d068amsh6e29993afa3d9b1p154d43jsnb7bfb59480e3',
+        'X-RapidAPI-Host': 'mboum-finance.p.rapidapi.com',
+      },
+    };
+    try {
+      const response = await fetch(
+        'https://mboum-finance.p.rapidapi.com/ne/news',
+        options,
+      );
+      const json = await response.json();
+      setApiData(json);
+      console.log('JSON Data ', json);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    // getData();
   }, []);
-  const renderItem = React.useCallback(
-    item => (
-      <View key={item} style={styles.itemContainer}>
-        <Text>{item}</Text>
-      </View>
-    ),
-    [],
-  );
-  // const data = React.useMemo(
-  //   () =>
-  //     Array(20)
-  //       .fill(0)
-  //       .map((_, index) => `index-${index}`),
-  //   [],
+
+  // const ItemRender = ({item}) => (
+  //   <View style={{padding: 12, flexDirection: 'row'}}>
+  //     <Image
+  //       style={{width: 50, height: 50, borderRadius: 25, marginRight: 8}}
+  //       source={{
+  //         uri: 'https://img.freepik.com/free-vector/gradient-abstract-logo_52683-8517.jpg',
+  //       }}
+  //     />
+  //     <Text style={{fontSize: 16}}>{item}</Text>
+  //   </View>
   // );
-  const data1 = [
-    {
-      name: 'Seoul',
-      population: 21500000,
-      color: 'rgba(131, 167, 234, 1)',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 9,
-    },
-    {
-      name: 'Toronto',
-      population: 2800000,
-      color: '#F00',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 9,
-    },
-    {
-      name: 'Beijing',
-      population: 527612,
-      color: 'red',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 9,
-    },
-    {
-      name: 'New York',
-      population: 8538000,
-      color: '#ffffff',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 9,
-    },
-    {
-      name: 'Moscow',
-      population: 11920000,
-      color: 'rgb(0, 0, 255)',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 9,
-    },
-  ];
-  const DATA = Array.from({length: 29}, (v, i) => i);
-  const ItemRender = ({item}) => (
-    <View style={{padding: 12, flexDirection: 'row'}}>
-      <Image
-        style={{width: 50, height: 50, borderRadius: 25, marginRight: 8}}
-        source={{
-          uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJKDPH3q6Lv1gFcHLmSekxg4uDP5n72gHLKg&usqp=CAU',
-        }}
-      />
-      <Text style={{fontSize: 16}}>This is entry no. {item}</Text>
-    </View>
-  );
   const Divider = () => (
     <View
       style={{
@@ -128,28 +226,6 @@ const LandingScreen = ({theme, navigation}) => {
       }}
     />
   );
-  const data = {
-    labels: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ],
-    datasets: [
-      {
-        data: [20, 46, 31, 80, 99, 3, 34, 16, 55, 62, 31, 80],
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
-        strokeWidth: 2,
-      },
-    ],
-  };
 
   const finances = [
     {
@@ -181,9 +257,9 @@ const LandingScreen = ({theme, navigation}) => {
       legendFontSize: 12,
     },
   ];
-  const ribbon = {
-    uri: 'https://img.freepik.com/free-photo/isolated-red-badge-with-ribbon_125540-1053.jpg',
-  };
+  // const ribbon = {
+  //   uri: 'https://img.freepik.com/free-photo/isolated-red-badge-with-ribbon_125540-1053.jpg',
+  // };
 
   return (
     <ImageBackground
@@ -195,75 +271,58 @@ const LandingScreen = ({theme, navigation}) => {
       }}
       resizeMode="cover"
       style={{
-        // flex: 1,
         height: '100%',
       }}>
-      {/* <View style={styles.container}> */}
-      {/* <View style={styles.pie}>
-        <PieChartComponent title="Overview" data={byTransactionTypes} />
-      </View> */}
-      {/* <View style={styles.liner}>
-        <LineChart
-          data={data}
-          width={screenWidth}
-          height={360}
-          center={[50, 50]}
-          chartConfig={chartConfig}
-          bezier
-        />
-      </View> */}
       <View style={styles.pieContainer}>
-        <PieChart
-          data={finances}
-          width={screenWidth}
-          height={250}
-          chartConfig={chartConfig}
-          accessor={'value'}
-          backgroundColor={'transparent'}
-          paddingLeft={'9'}
-          center={[10, 4]}
-        />
-        <Text style={{color: 'white', fontSize: 21, alignSelf: 'center'}}>
+        {hasCurrentMonthData ? (
+          <PieChart
+            data={pieData}
+            width={screenWidth}
+            height={250}
+            chartConfig={chartConfig}
+            accessor={'value'}
+            backgroundColor={'transparent'}
+            paddingLeft={'9'}
+            center={[10, 4]}
+          />
+        ) : (
+          <View
+            style={{
+              width: 220,
+              height: 220,
+              borderRadius: 110,
+              margin: 12,
+              alignSelf: 'center',
+              backgroundColor: 'gray',
+            }}
+          />
+        )}
+        {/* <Text style={{color: 'white', fontSize: 21, alignSelf: 'center'}}>
           August overview
+        </Text> */}
+        {/* <Text style={{color: 'white', fontSize: 21, alignSelf: 'center'}}>
+          {thisMonth} overview
+        </Text> */}
+        <Text
+          style={{color: 'white', fontSize: 21, fontWeight: 'bold', left: 32}}>
+          {hasCurrentMonthData
+            ? `${thisMonth} overview`
+            : `No data for ${thisMonth}`}
         </Text>
-        <View style={{alignSelf: 'flex-end'}}>
+        {/* <View style={{alignSelf: 'flex-end'}}>
           <Image
             source={ribbon}
             style={{
-              height: 70,
-              width: 70,
-              borderRadius: 35,
+              height: 50,
+              width: 50,
+              borderRadius: 25,
               transform: [{rotate: '20deg'}],
             }}
           />
-        </View>
-      </View>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'flex-end',
-          top: 25,
-          right: 35,
-          width: 55,
-          height: 55,
-          borderRadius: 27,
-          // backgroundColor: 'yellow',
-        }}>
-        {/* <Icon name="rocket" size={35} color="#900" /> */}
-
-        {/* <Image
-          source={ribbon}
-          style={{
-            height: 70,
-            width: 70,
-            borderRadius: 35,
-            transform: [{rotate: '20deg'}],
-          }}
-        /> */}
+        </View> */}
       </View>
 
-      <Text
+      {/* <Text
         onPress={() => navigation.navigate('Bar Charts')}
         style={styles.bar}>
         Bar Charts
@@ -275,8 +334,8 @@ const LandingScreen = ({theme, navigation}) => {
       </Text>
       <Text onPress={() => sheetRef.current.open()} style={styles.showNews}>
         News
-      </Text>
-      <RBSheet
+      </Text> */}
+      {/* <RBSheet
         ref={sheetRef}
         animationType="slide"
         closeOnDragDown={true}
@@ -294,14 +353,31 @@ const LandingScreen = ({theme, navigation}) => {
             backgroundColor: '#000',
           },
         }}>
-        {/* <RenderBSContent /> */}
         <FlatList
-          data={DATA}
           showsVerticalScrollIndicator={false}
-          renderItem={itemData => <ItemRender item={itemData.item} />}
+          data={apiData}
+          keyExtractor={item => item.guid}
+          renderItem={({item}) => (
+            <View style={{padding: 12, flexDirection: 'row'}}>
+              <Image
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  marginRight: 8,
+                }}
+                source={{
+                  uri: 'https://img.freepik.com/free-vector/gradient-abstract-logo_52683-8517.jpg',
+                }}
+              />
+              <Text numberOfLines={1} style={{fontSize: 16}}>
+                {item.title}
+              </Text>
+            </View>
+          )}
           ItemSeparatorComponent={Divider}
         />
-      </RBSheet>
+      </RBSheet> */}
       {/* </View> */}
     </ImageBackground>
   );
@@ -370,7 +446,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginLeft: 8,
     marginRight: 8,
-    marginTop: 16,
+    marginTop: '50%', //16,
   },
   showNews: {
     width: 250,
