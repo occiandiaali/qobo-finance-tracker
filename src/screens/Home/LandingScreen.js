@@ -180,27 +180,6 @@ const LandingScreen = ({theme, navigation}) => {
     console.log('All Chosen Values: ', chosen);
   }, [monthlyExpense, monthlyIncome, monthlyInvestments, monthlySavings]);
 
-  const getData = async () => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': '68d97d068amsh6e29993afa3d9b1p154d43jsnb7bfb59480e3',
-        'X-RapidAPI-Host': 'mboum-finance.p.rapidapi.com',
-      },
-    };
-    try {
-      const response = await fetch(
-        'https://mboum-finance.p.rapidapi.com/ne/news',
-        options,
-      );
-      const json = await response.json();
-      setApiData(json);
-      console.log('JSON Data ', json);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     // getData();
   }, []);
