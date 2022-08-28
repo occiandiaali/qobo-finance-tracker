@@ -30,23 +30,28 @@ import {
 } from '../../../data/db-service';
 
 const chartConfig = {
-  backgroundGradientFrom: '#f2f2f2', //'#b3b3ff', //'#1E2923',
+  backgroundGradientFrom: '#f2f2f2',
   backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: '#ffffff', //'#9999ff', //'#08130D',
+  backgroundGradientTo: '#ffffff',
   backgroundGradientToOpacity: 0.5,
   color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-  // strokeWidth: 2,
-  // barPercentage: 0.5,
-  // useShadowColorFromDataset: false,
 };
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const LandingScreen = ({theme, navigation}) => {
-  const sheetRef = React.useRef(null);
+const styles = StyleSheet.create({
+  pieContainer: {
+    height: '45%',
+    backgroundColor: '#7788ff',
+    borderRadius: 24,
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: '50%',
+  },
+});
 
-  const [apiData, setApiData] = useState([]);
+const LandingScreen = ({theme}) => {
   const [monthlyIncome, setMonthlyIncome] = useState([]);
   const [monthlyExpense, setMonthlyExpense] = useState([]);
   const [monthlySavings, setMonthlySavings] = useState([]);
@@ -56,11 +61,6 @@ const LandingScreen = ({theme, navigation}) => {
     try {
       const db = await getDBConnection();
       await createTransactionsTable(db);
-      // const groupedByTransactionTypes =
-      //   await getTransactionsGroupedByTransactionType(db);
-      // if (groupedByTransactionTypes.length) {
-      //   setByTransactionTypes(groupedByTransactionTypes);
-      // }
 
       const incomeMonth = await getIncomeGroupedByMonth(db);
       if (incomeMonth) {
@@ -106,30 +106,6 @@ const LandingScreen = ({theme, navigation}) => {
     useState(currentMonthData);
   const [pieData, setPieData] = useState([]);
 
-  // const months = [
-  //   'January',
-  //   'February',
-  //   'March',
-  //   'April',
-  //   'May',
-  //   'June',
-  //   'July',
-  //   'August',
-  //   'September',
-  //   'October',
-  //   'November',
-  //   'December',
-  // ];
-  // const d = new Date();
-  // const monthName = months[d.getMonth()];
-
-  // const getMonthName = monthNum => {
-  //   const d = new Date();
-  //   d.setMonth(monthNum - 1);
-  //   const monthName = d.toLocaleString('default', {month: 'long'});
-  //   return monthName;
-  // };
-
   useEffect(() => {
     const allData = [
       ...monthlyExpense,
@@ -154,16 +130,12 @@ const LandingScreen = ({theme, navigation}) => {
 
     const d = new Date();
     const month = d.getMonth();
-    //const month = d.getMonth() < 10 ? String(d.getMonth()).padStart();
     const year = d.getFullYear();
     const d1 = month < 10 ? `0${month + 1}-${year}` : `${month + 1}-${year}`;
 
     const monthsArray = monthlyExpense.map(m => m.label);
     const allMonthsArray = allData.map(data => data.label);
-    const allMonthsArrayValues = allData.map(data => data.value);
 
-    // setHasCurrentMonth(monthsArray.includes(d1));
-    // setHasCurrentMonthData(allMonthsArray.includes(1));
     setHasCurrentMonthData(allMonthsArray.includes(d1));
     console.log('d1: ', d1);
     console.log('split-d1 ', d1.split('-')[0]);
@@ -172,80 +144,23 @@ const LandingScreen = ({theme, navigation}) => {
     console.log('typeof split-d1 ', typeof parseInt(d1.split('-')[0], 10));
     console.log('Includes?: ', allMonthsArray.includes(d1));
     setThisMonth(monthNames.get(parseInt(d1.split('-')[0], 10)));
-    // console.log('Get Month ', monthNames.get(8));
+
     console.log('Month: ', monthsArray);
     console.log('All Data: ', allData);
+    console.log(
+      'Data Colours ',
+      allData.map(({color}) => color),
+    );
     const chosen = allData.filter(v => v.label === d1);
+
+    chosen.map(({color}) => console.log(`Colours: ${color}`));
     setPieData(chosen);
-    console.log('All Chosen Values: ', chosen);
+    console.log('All Pie Chosen Values: ', chosen);
   }, [monthlyExpense, monthlyIncome, monthlyInvestments, monthlySavings]);
-
-  useEffect(() => {
-    // getData();
-  }, []);
-
-  // const ItemRender = ({item}) => (
-  //   <View style={{padding: 12, flexDirection: 'row'}}>
-  //     <Image
-  //       style={{width: 50, height: 50, borderRadius: 25, marginRight: 8}}
-  //       source={{
-  //         uri: 'https://img.freepik.com/free-vector/gradient-abstract-logo_52683-8517.jpg',
-  //       }}
-  //     />
-  //     <Text style={{fontSize: 16}}>{item}</Text>
-  //   </View>
-  // );
-  const Divider = () => (
-    <View
-      style={{
-        height: 1,
-        width: '85%',
-        backgroundColor: 'gray',
-        alignSelf: 'center',
-      }}
-    />
-  );
-
-  const finances = [
-    {
-      name: 'Expenses',
-      value: 178000,
-      color: '#F00',
-      legendFontColor: '#fff', //'#7F7F7F',
-      legendFontSize: 12,
-    },
-    {
-      name: 'Income',
-      value: 54000,
-      color: 'rgba(131, 167, 234, 1)',
-      legendFontColor: '#fff', //'#7F7F7F',
-      legendFontSize: 12,
-    },
-    {
-      name: 'Savings',
-      value: 1200,
-      color: 'rgba(225, 120, 210, 1)',
-      legendFontColor: '#fff', //'#7F7F7F',
-      legendFontSize: 12,
-    },
-    {
-      name: 'Investments',
-      value: 36000,
-      color: '#0F0',
-      legendFontColor: '#fff', //'#7F7F7F',
-      legendFontSize: 12,
-    },
-  ];
-  // const ribbon = {
-  //   uri: 'https://img.freepik.com/free-photo/isolated-red-badge-with-ribbon_125540-1053.jpg',
-  // };
 
   return (
     <ImageBackground
       source={{
-        //uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1gCbld6bch7MjYd5jHUhfn9StqDMMdQ4qkg&usqp=CAU',
-        //uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO-5F_JrtgVh3J4oVy8ZpqxFDkiGf3aaAylg&usqp=CAU',
-        //uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO7JejWoZc-3TH9krKkFh1n-ABafVimrU34Q&usqp=CAU',
         uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
       }}
       resizeMode="cover"
@@ -276,168 +191,15 @@ const LandingScreen = ({theme, navigation}) => {
             }}
           />
         )}
-        {/* <Text style={{color: 'white', fontSize: 21, alignSelf: 'center'}}>
-          August overview
-        </Text> */}
-        {/* <Text style={{color: 'white', fontSize: 21, alignSelf: 'center'}}>
-          {thisMonth} overview
-        </Text> */}
         <Text
           style={{color: 'white', fontSize: 21, fontWeight: 'bold', left: 32}}>
           {hasCurrentMonthData
             ? `${thisMonth} overview`
             : `No data for ${thisMonth}`}
         </Text>
-        {/* <View style={{alignSelf: 'flex-end'}}>
-          <Image
-            source={ribbon}
-            style={{
-              height: 50,
-              width: 50,
-              borderRadius: 25,
-              transform: [{rotate: '20deg'}],
-            }}
-          />
-        </View> */}
       </View>
-
-      {/* <Text
-        onPress={() => navigation.navigate('Bar Charts')}
-        style={styles.bar}>
-        Bar Charts
-      </Text>
-      <Text
-        style={styles.line}
-        onPress={() => navigation.navigate('Line Charts')}>
-        Line Charts
-      </Text>
-      <Text onPress={() => sheetRef.current.open()} style={styles.showNews}>
-        News
-      </Text> */}
-      {/* <RBSheet
-        ref={sheetRef}
-        animationType="slide"
-        closeOnDragDown={true}
-        customStyles={{
-          container: {
-            height: '60%',
-            borderTopLeftRadius: 21,
-            borderTopRightRadius: 21,
-            backgroundColor: '#c8d0e8',
-          },
-          wrapper: {
-            backgroundColor: 'transparent',
-          },
-          draggableIcon: {
-            backgroundColor: '#000',
-          },
-        }}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={apiData}
-          keyExtractor={item => item.guid}
-          renderItem={({item}) => (
-            <View style={{padding: 12, flexDirection: 'row'}}>
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
-                  marginRight: 8,
-                }}
-                source={{
-                  uri: 'https://img.freepik.com/free-vector/gradient-abstract-logo_52683-8517.jpg',
-                }}
-              />
-              <Text numberOfLines={1} style={{fontSize: 16}}>
-                {item.title}
-              </Text>
-            </View>
-          )}
-          ItemSeparatorComponent={Divider}
-        />
-      </RBSheet> */}
-      {/* </View> */}
     </ImageBackground>
   );
 };
 
 export default withTheme(LandingScreen);
-
-const styles = StyleSheet.create({
-  bar: {
-    width: 250,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#7777ff',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    marginTop: '15%', //28,
-    marginLeft: -48, //-24,
-    color: 'white',
-    fontSize: 19,
-    fontWeight: 'bold',
-  },
-  bsContent: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    // paddingTop: 200,
-    backgroundColor: '#d9e7fc', //'white',
-  },
-  contentContainer: {
-    backgroundColor: 'white',
-  },
-  itemContainer: {
-    padding: 6,
-    margin: 6,
-    backgroundColor: '#eee',
-  },
-  line: {
-    width: 250,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#5555ff',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    marginTop: 28,
-    marginLeft: '45%',
-    color: 'white',
-    fontSize: 19,
-    fontWeight: 'bold',
-  },
-  liner: {
-    marginTop: 18,
-  },
-  pie: {
-    width: 250,
-    height: 250,
-    borderRadius: 125,
-    backgroundColor: 'gray',
-    alignSelf: 'center',
-    marginTop: '10%',
-  },
-  pieContainer: {
-    height: '45%',
-    backgroundColor: '#7788ff',
-    borderRadius: 24,
-    marginLeft: 8,
-    marginRight: 8,
-    marginTop: '50%', //16,
-  },
-  showNews: {
-    width: 250,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#3333ff', //'#6666ff',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    marginTop: 28,
-    marginLeft: -48, //-24,
-    color: 'white',
-    fontSize: 19,
-    fontWeight: 'bold',
-  },
-});

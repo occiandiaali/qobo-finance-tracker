@@ -12,6 +12,7 @@ import NotificationScreen from './src/screens/Transactions/NotificationScreen';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
+import NewsScreen from './src/screens/Home/NewsScreen';
 
 const theme = {
   ...DefaultTheme,
@@ -103,7 +104,7 @@ const HomeTabs = () => (
     <Tab.Screen
       options={{headerShown: false}}
       name="News"
-      component={CreateEntryScreen}
+      component={NewsScreen}
     />
     <Tab.Screen
       options={{headerShown: false}}

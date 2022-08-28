@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/occian44/JobsProduct/RN-Projects/Kost/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pt/values-pt.xml",
+            "outputFile": "/home/occian44/JobsProduct/RN-Projects/qobo/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pt/values-pt.xml",
             "map": [
                 {
                     "source": "/home/occian44/.gradle/caches/transforms-3/a5da391e889210c4d2ba1ae6744f6033/transformed/appcompat-1.4.1/res/values-pt/values-pt.xml",

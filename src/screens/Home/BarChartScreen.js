@@ -31,18 +31,14 @@ const styles = StyleSheet.create({
 });
 
 const summonsConfig = {
-  // backgroundGradientFrom: '#1E2923',
-  // backgroundGradientFromOpacity: 0,
-  // backgroundGradientTo: '#08130D',
   backgroundGradientFrom: '#2222ff',
   backgroundGradientFromOpacity: 0,
   backgroundGradientTo: '#9999ff',
   backgroundGradientToOpacity: 0.5,
-  // color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
   color: (opacity = 1) => '#023047',
   labelColor: (opacity = 1) => '#fff',
   strokeWidth: 2, // optional, default 3
-  barPercentage: 2,
+  barPercentage: 2.5,
   useShadowColorFromDataset: false, // optional
 };
 
@@ -137,26 +133,47 @@ const BarChartScreen = ({theme}) => {
   //   });
   // }
 
-  const label1 = monthlySavings.map(item => {
-    return item.label;
+  const savings = monthlySavings.map(item => {
+    return item.name;
   });
-  const label2 = monthlyInvestments.map(item => {
-    return item.label;
+  const investments = monthlyInvestments.map(item => {
+    return item.name;
   });
 
-  const values1 = monthlySavings.map(item => {
+  const savingsValues = monthlySavings.map(item => {
     return item.value;
   });
-  const values2 = monthlyInvestments.map(item => {
+  const investmentValues = monthlyInvestments.map(item => {
     return item.value;
   });
+
+  const savingsColours = monthlySavings.map(({color}) => color);
+  const investmentColours = monthlyInvestments.map(({color}) => color);
+
+  // const summonsData = {
+  //   labels: [label2, label1],
+  //   legend: ['Savings', 'Investments'],
+  //   data: [[...values1], [...values2]],
+  //   barColors: ['#61035b', '#fc81f4'],
+  //   // barColors: ['#79d11b', '#2a4f03'],
+  // };
+  // const summonsData = {
+  //   labels: ['Test1', 'Test2'],
+  //   legend: ['L1', 'L2', 'L3'],
+  //   data: [
+  //     [60, 60, 60],
+  //     [30, 30, 60],
+  //   ],
+  //   barColors: ['#ed665c', '#e63c30', '#660a03'],
+  // };
 
   const summonsData = {
-    labels: [label2, label1],
-    legend: ['Savings', 'Investments'],
-    data: [[...values1], [...values2]],
-    // barColors: ['#dfe4ea', '#ced6e0'],
-    barColors: ['#79d11b', '#2a4f03'],
+    labels: ['Savings', 'Investments'],
+    // legend: ['L2', 'L3'],
+    data: [[...savingsValues], [...investmentValues]],
+    // barColors: ['#ed665c', '#e63c30', '#660a03'],
+    barColors: [...savingsColours, ...investmentColours],
+    // barColors: ['#a32626', '#3a8505'],
   };
 
   // const chartData = {
@@ -183,7 +200,7 @@ const BarChartScreen = ({theme}) => {
                   alignSelf: 'center',
                   paddingBottom: 8,
                 }}>
-                {'Savings vs. Investments'}
+                {'Annual Savings vs. Investments'}
               </Text>
               <StackedBarChart
                 style={{
@@ -195,7 +212,7 @@ const BarChartScreen = ({theme}) => {
                 width={screenWidth}
                 height={220}
                 chartConfig={summonsConfig}
-                withHorizontalLabels={false}
+                //withHorizontalLabels={false}
               />
             </>
           )}

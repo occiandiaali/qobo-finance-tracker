@@ -1,5 +1,5 @@
 {
-  "name": "Kost",
+  "name": "qobo",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "react": "18.0.0",
     "react-native": "0.69.4",
     "react-native-chart-kit": "^6.12.0",
+    "react-native-dotenv": "^3.3.1",
     "react-native-gesture-handler": "^2.5.0",
     "react-native-paper": "^4.12.4",
     "react-native-paper-dropdown": "^1.0.7",
