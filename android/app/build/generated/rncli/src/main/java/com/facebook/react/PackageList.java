@@ -27,6 +27,8 @@ import org.pgsqlite.SQLitePluginPackage;
 import com.horcrux.svg.SvgPackage;
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
+// react-native-webview
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 
 public class PackageList {
   private Application application;
@@ -79,7 +81,8 @@ public class PackageList {
       new RNScreensPackage(),
       new SQLitePluginPackage(),
       new SvgPackage(),
-      new VectorIconsPackage()
+      new VectorIconsPackage(),
+      new RNCWebViewPackage()
     ));
   }
 }

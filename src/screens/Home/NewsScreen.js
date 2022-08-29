@@ -38,7 +38,7 @@ const Divider = () => (
   />
 );
 
-const NewsScreen = ({theme}) => {
+const NewsScreen = ({theme, navigation}) => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -49,7 +49,11 @@ const NewsScreen = ({theme}) => {
           {item.title}
           <View style={{paddingLeft: 6}}>
             <Text
-              onPress={() => console.log(`${item.link}`)}
+              onPress={() =>
+                navigation.navigate('News Detail', {
+                  articleLink: item.link,
+                })
+              }
               style={{fontSize: 12, color: '#ff0000'}}>
               READ...
             </Text>
@@ -88,6 +92,7 @@ const NewsScreen = ({theme}) => {
   useEffect(() => {
     getData();
   }, []);
+
   return (
     <ImageBackground
       source={{

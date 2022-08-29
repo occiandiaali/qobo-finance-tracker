@@ -13,6 +13,7 @@ import NotificationScreen from './src/screens/Transactions/NotificationScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import NewsScreen from './src/screens/Home/NewsScreen';
+import NewsDetailScreen from './src/screens/Home/NewsDetailScreen';
 
 const theme = {
   ...DefaultTheme,
@@ -137,6 +138,7 @@ export default function App() {
             component={BarChartScreen}
           />
           <Stack.Screen name="Line Charts" component={LineChartScreen} />
+          <Stack.Screen name="News Detail" component={NewsDetailScreen} />
           <Stack.Screen name="Notification" component={NotificationScreen} />
         </Stack.Navigator>
       </NavigationContainer>
