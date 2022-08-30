@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -14,18 +14,6 @@ import {withTheme} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {RAPID_API_KEY} from '@env';
-
-const ItemRender = ({item}) => (
-  <View style={{padding: 12, flexDirection: 'row'}}>
-    <Image
-      style={{width: 50, height: 50, borderRadius: 25, marginRight: 8}}
-      source={{
-        uri: 'https://img.freepik.com/free-vector/gradient-abstract-logo_52683-8517.jpg',
-      }}
-    />
-    <Text style={{fontSize: 16}}>{item}</Text>
-  </View>
-);
 
 const Divider = () => (
   <View

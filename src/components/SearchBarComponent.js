@@ -42,15 +42,23 @@ const SearchBarComponent = ({
   searchPhrase,
   setClicked,
   setSearchPhrase,
+  placeholderPhrase,
 }) => {
   return (
     <View style={styles.container}>
       <View
         style={clicked ? styles.searchbar_clicked : styles.searchbar_unclicked}>
-        <Icon name="search" size={20} color="#000" style={styles.search_icon} />
+        {clicked && (
+          <Icon
+            name="search"
+            size={20}
+            color="#000"
+            style={styles.search_icon}
+          />
+        )}
         <TextInput
           style={styles.input}
-          placeholder="Search"
+          placeholder={placeholderPhrase}
           value={searchPhrase}
           onChangeText={setSearchPhrase}
           onFocus={() => setClicked(true)}

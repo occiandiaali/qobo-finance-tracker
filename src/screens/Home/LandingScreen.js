@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginLeft: 8,
     marginRight: 8,
-    marginTop: '50%',
+    marginTop: '35%',
   },
 });
 
@@ -158,6 +158,40 @@ const LandingScreen = ({theme}) => {
     console.log('All Pie Chosen Values: ', chosen);
   }, [monthlyExpense, monthlyIncome, monthlyInvestments, monthlySavings]);
 
+  const [showOne, setShowOne] = useState(true);
+  const [showTwo, setShowTwo] = useState(false);
+
+  const ComponentOne = () => (
+    <PieChart
+      data={pieData}
+      width={screenWidth}
+      height={250}
+      chartConfig={chartConfig}
+      accessor={'value'}
+      backgroundColor={'transparent'}
+      paddingLeft={'9'}
+      center={[10, 4]}
+    />
+  );
+  const ComponentTwo = () => (
+    <View
+      style={{
+        height: 250,
+        width: screenWidth,
+        backgroundColor: '#7777ff',
+      }}
+    />
+  );
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // showOne === true ? setShowOne(false) : setShowOne(true);
+      //  showTwo === false ? setShowTwo(true) : setShowTwo(false);
+    }, 6000);
+
+    return () => clearInterval(intervalId);
+  }, [showOne, showTwo]);
+
   return (
     <ImageBackground
       source={{
@@ -167,18 +201,30 @@ const LandingScreen = ({theme}) => {
       style={{
         height: '100%',
       }}>
+      <Text
+        style={{
+          alignSelf: 'center',
+          top: '5%',
+          color: '#ffffff',
+          fontSize: 70,
+          fontWeight: '200',
+        }}>
+        qobo
+      </Text>
+
       <View style={styles.pieContainer}>
         {hasCurrentMonthData ? (
-          <PieChart
-            data={pieData}
-            width={screenWidth}
-            height={250}
-            chartConfig={chartConfig}
-            accessor={'value'}
-            backgroundColor={'transparent'}
-            paddingLeft={'9'}
-            center={[10, 4]}
-          />
+          // <PieChart
+          //   data={pieData}
+          //   width={screenWidth}
+          //   height={250}
+          //   chartConfig={chartConfig}
+          //   accessor={'value'}
+          //   backgroundColor={'transparent'}
+          //   paddingLeft={'9'}
+          //   center={[10, 4]}
+          // />
+          (showOne && ComponentOne()) || (showTwo && ComponentTwo())
         ) : (
           <View
             style={{

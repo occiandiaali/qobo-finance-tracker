@@ -14,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import NewsScreen from './src/screens/Home/NewsScreen';
 import NewsDetailScreen from './src/screens/Home/NewsDetailScreen';
+import VideoPlayer from './src/screens/Learning/VideoPlayer';
 
 const theme = {
   ...DefaultTheme,
@@ -140,6 +141,7 @@ export default function App() {
           <Stack.Screen name="Line Charts" component={LineChartScreen} />
           <Stack.Screen name="News Detail" component={NewsDetailScreen} />
           <Stack.Screen name="Notification" component={NotificationScreen} />
+          <Stack.Screen name="VideoPlayer" component={VideoPlayer} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
