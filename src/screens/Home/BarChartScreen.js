@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {
   Dimensions,
   ImageBackground,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -27,19 +28,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 45,
+    backgroundColor: '#fff',
   },
 });
+
+const wait = timeout => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+};
 
 const summonsConfig = {
   backgroundGradientFrom: '#2222ff',
   backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: '#9999ff',
-  backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => '#023047',
+  backgroundGradientTo: '#2222FF',
+  backgroundGradientToOpacity: 0.8, //0.5,
+  color: (opacity = 1) => '#2222ff', //'#023047',
   labelColor: (opacity = 1) => '#fff',
   strokeWidth: 2, // optional, default 3
   barPercentage: 2.5,
   useShadowColorFromDataset: false, // optional
+  decimalPlaces: 0,
 };
 
 const BarChartScreen = ({theme}) => {
@@ -52,6 +59,8 @@ const BarChartScreen = ({theme}) => {
   const [monthlyIncome, setMonthlyIncome] = useState([]);
   const [monthlySavings, setMonthlySavings] = useState([]);
   const [monthlyInvestments, setMonthlyInvestments] = useState([]);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const loadDataCallback = useCallback(async () => {
     try {
@@ -87,6 +96,12 @@ const BarChartScreen = ({theme}) => {
     }
   }, []);
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadDataCallback();
+    wait(2000).then(() => setRefreshing(false));
+  }, [loadDataCallback]);
+
   useEffect(() => {
     loadDataCallback();
   }, [loadDataCallback]);
@@ -99,39 +114,6 @@ const BarChartScreen = ({theme}) => {
 
   const hasSavingsInvestment =
     monthlySavings.length > 0 || monthlyInvestments.length > 0;
-
-  // const datasets = [];
-
-  // if (monthlyExpense.length > 0) {
-  //   datasets.push({
-  //     data: monthlyExpense.map(item => item.value),
-  //     color: (opacity = 1) => '#003049',
-  //     strokeWidth: 2,
-  //   });
-  // }
-  // if (monthlyIncome.length > 0) {
-  //   datasets.push({
-  //     data: monthlyIncome.map(item => item.value),
-  //     color: (opacity = 1) => '#003049',
-  //     strokeWidth: 2,
-  //   });
-  // }
-
-  // if (hasMonthlySavings) {
-  //   datasets.push({
-  //     data: monthlySavings.map(item => item.value),
-  //     color: (opacity = 1) => '#003049',
-  //     strokeWidth: 2,
-  //   });
-  // }
-
-  // if (hasMonthlyInvestments) {
-  //   datasets.push({
-  //     data: monthlyInvestments.map(item => item.value),
-  //     color: (opacity = 1) => '#003049',
-  //     strokeWidth: 2,
-  //   });
-  // }
 
   const savings = monthlySavings.map(item => {
     return item.name;
@@ -150,23 +132,6 @@ const BarChartScreen = ({theme}) => {
   const savingsColours = monthlySavings.map(({color}) => color);
   const investmentColours = monthlyInvestments.map(({color}) => color);
 
-  // const summonsData = {
-  //   labels: [label2, label1],
-  //   legend: ['Savings', 'Investments'],
-  //   data: [[...values1], [...values2]],
-  //   barColors: ['#61035b', '#fc81f4'],
-  //   // barColors: ['#79d11b', '#2a4f03'],
-  // };
-  // const summonsData = {
-  //   labels: ['Test1', 'Test2'],
-  //   legend: ['L1', 'L2', 'L3'],
-  //   data: [
-  //     [60, 60, 60],
-  //     [30, 30, 60],
-  //   ],
-  //   barColors: ['#ed665c', '#e63c30', '#660a03'],
-  // };
-
   const summonsData = {
     labels: ['Savings', 'Investments'],
     // legend: ['L2', 'L3'],
@@ -182,20 +147,23 @@ const BarChartScreen = ({theme}) => {
   // };
 
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
-      }}
-      style={{
-        flex: 1,
-      }}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        <ScrollView style={{flex: 1}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              colors={['#fff']}
+              progressBackgroundColor={'#8888ff'}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }>
           {hasSavingsInvestment && (
             <>
               <Text
                 style={{
-                  color: '#fff',
+                  color: '#4444ff',
                   fontSize: 18,
                   alignSelf: 'center',
                   paddingBottom: 8,
@@ -250,7 +218,7 @@ const BarChartScreen = ({theme}) => {
           )}
         </ScrollView>
       </View>
-    </ImageBackground>
+    </SafeAreaView>
   );
 };
 

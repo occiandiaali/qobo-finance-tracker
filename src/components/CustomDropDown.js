@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const styles = StyleSheet.create({
   dropdown: {
     position: 'absolute',
-    backgroundColor: '#fff',
+    backgroundColor: '#9999ff', //'#fff',
     width: '96%',
     height: '50%',
     alignSelf: 'center',
@@ -51,7 +51,9 @@ const CustomDropDown = ({label, data, onSelect}) => {
 
   const renderItem = ({item}) => (
     <Pressable style={styles.item} onPress={() => onItemPress(item)}>
-      <Text style={{fontSize: 16}}>{item.label}</Text>
+      <Text style={{fontSize: 16, fontWeight: '700', color: '#fff'}}>
+        {item.label}
+      </Text>
     </Pressable>
   );
 

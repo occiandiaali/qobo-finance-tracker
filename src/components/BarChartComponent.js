@@ -6,20 +6,31 @@ const screenWidth = Dimensions.get('window').width;
 
 function BarChartComponent({title, fillShadowGradient, data}) {
   const chartConfig = {
-    backgroundGradientFrom: '#fff',
+    backgroundGradientFrom: '#4444ff',
     backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: '#fff',
+    backgroundGradientTo: '#9999ff',
     backgroundGradientToOpacity: 0.5,
 
     fillShadowGradient,
     fillShadowGradientOpacity: 1,
     color: (opacity = 1) => '#023047',
-    labelColor: (opacity = 1) => '#fff',
+    labelColor: (opacity = 1) => '#4444ff',
     strokeWidth: 2,
 
     barPercentage: 0.5,
     useShadowColorFromDataset: false,
     decimalPlaces: 0,
+  };
+  const summonsConfig = {
+    backgroundGradientFrom: '#2222ff',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#9999ff',
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => '#023047',
+    labelColor: (opacity = 1) => '#fff',
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 2.5,
+    useShadowColorFromDataset: false, // optional
   };
 
   const labels = data.map(item => {
@@ -42,7 +53,7 @@ function BarChartComponent({title, fillShadowGradient, data}) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={{color: '#fff', fontSize: 18}}>{title}</Text>
+        <Text style={{color: '#4444ff', fontSize: 18}}>{title}</Text>
       </View>
       <BarChart
         data={chartData}

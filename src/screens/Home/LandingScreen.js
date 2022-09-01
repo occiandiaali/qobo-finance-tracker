@@ -6,6 +6,7 @@ import {
   Image,
   ImageBackground,
   Pressable,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -39,10 +40,17 @@ const chartConfig = {
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+const wait = timeout => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+};
 
 const styles = StyleSheet.create({
+  landingContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   pieContainer: {
-    height: '45%',
+    height: '40%', //'45%',
     backgroundColor: '#7788ff',
     borderRadius: 24,
     marginLeft: 8,
@@ -56,6 +64,8 @@ const LandingScreen = ({theme}) => {
   const [monthlyExpense, setMonthlyExpense] = useState([]);
   const [monthlySavings, setMonthlySavings] = useState([]);
   const [monthlyInvestments, setMonthlyInvestments] = useState([]);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const loadDataCallback = useCallback(async () => {
     try {
@@ -106,7 +116,7 @@ const LandingScreen = ({theme}) => {
     useState(currentMonthData);
   const [pieData, setPieData] = useState([]);
 
-  useEffect(() => {
+  const pullLatestData = useCallback(() => {
     const allData = [
       ...monthlyExpense,
       ...monthlyIncome,
@@ -135,28 +145,36 @@ const LandingScreen = ({theme}) => {
 
     const monthsArray = monthlyExpense.map(m => m.label);
     const allMonthsArray = allData.map(data => data.label);
-
+    const allNamesArray = allData.map(data => data.name);
+    console.log('All names array: ', allNamesArray);
     setHasCurrentMonthData(allMonthsArray.includes(d1));
     console.log('d1: ', d1);
-    console.log('split-d1 ', d1.split('-')[0]);
-    console.log('typeof split-d1 ', typeof d1.split('-')[0]);
-    console.log('split-d1 num ', parseInt(d1.split('-')[0], 10));
-    console.log('typeof split-d1 ', typeof parseInt(d1.split('-')[0], 10));
-    console.log('Includes?: ', allMonthsArray.includes(d1));
+    // console.log('split-d1 ', d1.split('-')[0]);
+
+    // console.log('split-d1 num ', parseInt(d1.split('-')[0], 10));
+
+    // console.log('Includes?: ', allMonthsArray.includes(d1));
     setThisMonth(monthNames.get(parseInt(d1.split('-')[0], 10)));
 
     console.log('Month: ', monthsArray);
     console.log('All Data: ', allData);
-    console.log(
-      'Data Colours ',
-      allData.map(({color}) => color),
-    );
-    const chosen = allData.filter(v => v.label === d1);
 
-    chosen.map(({color}) => console.log(`Colours: ${color}`));
+    const chosen = allData.filter(v => v.label === d1);
+    //  chosen.map(({label}) => console.log(`Labels: ${label}`));
+    //  chosen.map(({color}) => console.log(`Colours: ${color}`));
     setPieData(chosen);
     console.log('All Pie Chosen Values: ', chosen);
   }, [monthlyExpense, monthlyIncome, monthlyInvestments, monthlySavings]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadDataCallback();
+    wait(2000).then(() => setRefreshing(false));
+  }, [loadDataCallback]);
+
+  useEffect(() => {
+    pullLatestData();
+  }, [pullLatestData]);
 
   const [showOne, setShowOne] = useState(true);
   const [showTwo, setShowTwo] = useState(false);
@@ -193,58 +211,58 @@ const LandingScreen = ({theme}) => {
   }, [showOne, showTwo]);
 
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
-      }}
-      resizeMode="cover"
-      style={{
-        height: '100%',
-      }}>
-      <Text
-        style={{
-          alignSelf: 'center',
-          top: '5%',
-          color: '#ffffff',
-          fontSize: 70,
-          fontWeight: '200',
-        }}>
-        qobo
-      </Text>
-
-      <View style={styles.pieContainer}>
-        {hasCurrentMonthData ? (
-          // <PieChart
-          //   data={pieData}
-          //   width={screenWidth}
-          //   height={250}
-          //   chartConfig={chartConfig}
-          //   accessor={'value'}
-          //   backgroundColor={'transparent'}
-          //   paddingLeft={'9'}
-          //   center={[10, 4]}
-          // />
-          (showOne && ComponentOne()) || (showTwo && ComponentTwo())
-        ) : (
-          <View
-            style={{
-              width: 220,
-              height: 220,
-              borderRadius: 110,
-              margin: 12,
-              alignSelf: 'center',
-              backgroundColor: 'gray',
-            }}
+    <SafeAreaView style={styles.landingContainer}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            colors={['#fff']}
+            progressBackgroundColor={'#8888ff'}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
           />
-        )}
+        }>
         <Text
-          style={{color: 'white', fontSize: 21, fontWeight: 'bold', left: 32}}>
-          {hasCurrentMonthData
-            ? `${thisMonth} overview`
-            : `No data for ${thisMonth}`}
+          style={{
+            alignSelf: 'center',
+            top: '5%',
+            color: '#4444ff',
+            fontSize: 70,
+            fontWeight: '200',
+          }}>
+          qobo
         </Text>
-      </View>
-    </ImageBackground>
+
+        <View style={styles.pieContainer}>
+          {hasCurrentMonthData ? (
+            (showOne && ComponentOne()) || (showTwo && ComponentTwo())
+          ) : (
+            <View
+              style={{
+                width: 220,
+                height: 220,
+                borderRadius: 110,
+                margin: 12,
+                alignSelf: 'center',
+                backgroundColor: 'gray',
+              }}
+            />
+          )}
+          <Text
+            style={{
+              color: '#5555ff',
+              fontSize: 21,
+              fontWeight: 'bold',
+              left: 32,
+            }}>
+            {hasCurrentMonthData
+              ? `${thisMonth} overview`
+              : `No data for ${thisMonth}`}
+          </Text>
+          <Text style={{fontSize: 16, left: '10%'}}>Pull to refresh</Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

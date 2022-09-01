@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
-    backgroundColor: '#d9e7fc', //'white', //'#4b0082',
+    // backgroundColor: '#d9e7fc', //'white', //'#4b0082',
+    backgroundColor: '#fff',
   },
   content: {
     marginTop: '25%',
@@ -205,15 +206,15 @@ const CreateEntryScreen = ({navigation, theme}) => {
   const canCreate = amount > 0 && transactionType !== null;
 
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
-      }}
-      resizeMode={'cover'}
-      style={{
-        flex: 1,
-      }}>
-      {/* <SafeAreaView style={styles.container}> */}
+    // <ImageBackground
+    //   source={{
+    //     uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
+    //   }}
+    //   resizeMode={'cover'}
+    //   style={{
+    //     flex: 1,
+    //   }}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <FieldContainer>
           <View style={styles.selectDate}>
@@ -294,9 +295,7 @@ const CreateEntryScreen = ({navigation, theme}) => {
           </FieldContainer>
         </View>
       </View>
-
-      {/* </SafeAreaView> */}
-    </ImageBackground>
+    </SafeAreaView>
   );
 };
 

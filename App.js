@@ -15,6 +15,9 @@ import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import NewsScreen from './src/screens/Home/NewsScreen';
 import NewsDetailScreen from './src/screens/Home/NewsDetailScreen';
 import VideoPlayer from './src/screens/Learning/VideoPlayer';
+import VideoSearch from './src/screens/Learning/VideoSearch';
+//import SearchBarComponent from './src/components/SearchBarComponent';
+//import Icon from 'react-native-vector-icons/Ionicons';
 
 const theme = {
   ...DefaultTheme,
@@ -47,6 +50,24 @@ const theme = {
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const LearningStack = createNativeStackNavigator();
+
+const LearningStackScreen = () => (
+  <LearningStack.Navigator initialRouteName="LearningCentral">
+    <LearningStack.Screen
+      options={{headerShown: false}}
+      name="LearningCentral"
+      component={LearningCentral}
+    />
+    <LearningStack.Screen
+      name="VideoSearch"
+      component={VideoSearch}
+      options={{
+        headerShown: false,
+      }}
+    />
+  </LearningStack.Navigator>
+);
 
 const HomeTabs = () => (
   <Tab.Navigator
@@ -111,7 +132,7 @@ const HomeTabs = () => (
     <Tab.Screen
       options={{headerShown: false}}
       name="Learning"
-      component={LearningCentral}
+      component={LearningStackScreen}
     />
   </Tab.Navigator>
 );

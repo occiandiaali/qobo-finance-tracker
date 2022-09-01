@@ -5,14 +5,16 @@ import {
   Image,
   ImageBackground,
   Pressable,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
 import {withTheme} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-import SearchBarComponent from '../../components/SearchBarComponent';
 import {YOUTUBE_KEY} from '@env';
 
 const styles = StyleSheet.create({
@@ -29,11 +31,21 @@ const styles = StyleSheet.create({
   rowLabel: {
     fontSize: 21,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: '#4444ff',
   },
   rowLabelContainer: {
     left: 16,
     top: 8,
+  },
+  textInputContainer: {
+    height: 50,
+    top: 6,
+    marginBottom: 32,
+    flexDirection: 'row',
+    padding: 8,
+    backgroundColor: '#d2d6d9',
+    margin: 12,
+    borderRadius: 36,
   },
   videoView: {
     width: 200,
@@ -161,22 +173,25 @@ const LearningCentral = ({theme, navigation}) => {
 
   return (
     <>
-      <View style={{backgroundColor: '#9999ff'}}>
-        <SearchBarComponent
-          placeholderPhrase="Search financial phrase..."
-          searchPhrase={searchPhrase}
-          setSearchPhrase={setSearchPhrase}
-          clicked={clicked}
-          setClicked={setClicked}
-        />
-      </View>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <ImageBackground
-          source={{
-            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
-          }}
-          resizeMode="cover"
-          style={{flex: 1}}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.textInputContainer}>
+            <Icon
+              name="search"
+              size={20}
+              // color="#fff"
+              style={{left: 16, top: 6, marginRight: 16}}
+            />
+            <TextInput
+              onFocus={() => navigation.navigate('VideoSearch')}
+              placeholder="Search videos"
+              style={{
+                top: 4,
+                left: 8,
+                width: '100%',
+              }}
+            />
+          </View>
           <View style={styles.rowLabelContainer}>
             <Text style={styles.rowLabel}>Investing Basics</Text>
           </View>
@@ -304,8 +319,8 @@ const LearningCentral = ({theme, navigation}) => {
               ))}
             </ScrollView>
           </View>
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };
