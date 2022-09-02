@@ -16,8 +16,6 @@ import NewsScreen from './src/screens/Home/NewsScreen';
 import NewsDetailScreen from './src/screens/Home/NewsDetailScreen';
 import VideoPlayer from './src/screens/Learning/VideoPlayer';
 import VideoSearch from './src/screens/Learning/VideoSearch';
-//import SearchBarComponent from './src/components/SearchBarComponent';
-//import Icon from 'react-native-vector-icons/Ionicons';
 
 const theme = {
   ...DefaultTheme,
@@ -72,7 +70,6 @@ const LearningStackScreen = () => (
 const HomeTabs = () => (
   <Tab.Navigator
     screenOptions={({route}) => ({
-      // tabBarStyle: {backgroundColor: '#d8d4fa'},
       tabBarStyle: {
         backgroundColor: '#7777ff',
         paddingBottom: 4,
@@ -88,8 +85,8 @@ const HomeTabs = () => (
           iconName = 'add-circle';
         } else if (route.name === 'News') {
           iconName = focused ? 'newspaper' : 'newspaper-outline';
-        } else if (route.name === 'Learning') {
-          iconName = focused ? 'book' : 'book-outline';
+        } else if (route.name === 'Videos') {
+          iconName = focused ? 'videocam' : 'videocam-outline';
         }
         return (
           <Ionicons
@@ -131,7 +128,7 @@ const HomeTabs = () => (
     />
     <Tab.Screen
       options={{headerShown: false}}
-      name="Learning"
+      name="Videos"
       component={LearningStackScreen}
     />
   </Tab.Navigator>
@@ -160,9 +157,33 @@ export default function App() {
             component={BarChartScreen}
           />
           <Stack.Screen name="Line Charts" component={LineChartScreen} />
-          <Stack.Screen name="News Detail" component={NewsDetailScreen} />
-          <Stack.Screen name="Notification" component={NotificationScreen} />
-          <Stack.Screen name="VideoPlayer" component={VideoPlayer} />
+          <Stack.Screen
+            options={{
+              title: '',
+              headerStyle: {backgroundColor: '#9999ff'},
+              headerTintColor: '#fff',
+            }}
+            name="News Detail"
+            component={NewsDetailScreen}
+          />
+          <Stack.Screen
+            options={{
+              title: '',
+              headerStyle: {backgroundColor: '#9999ff'},
+              headerTintColor: '#fff',
+            }}
+            name="Notification"
+            component={NotificationScreen}
+          />
+          <Stack.Screen
+            options={{
+              title: '',
+              headerStyle: {backgroundColor: '#9999ff'},
+              headerTintColor: '#fff',
+            }}
+            name="VideoPlayer"
+            component={VideoPlayer}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

@@ -184,16 +184,17 @@ const LearningCentral = ({theme, navigation}) => {
             />
             <TextInput
               onFocus={() => navigation.navigate('VideoSearch')}
-              placeholder="Search videos"
+              placeholder="Search financial videos"
               style={{
-                top: 4,
                 left: 8,
+                bottom: 4,
                 width: '100%',
+                height: 40,
               }}
             />
           </View>
           <View style={styles.rowLabelContainer}>
-            <Text style={styles.rowLabel}>Investing Basics</Text>
+            <Text style={styles.rowLabel}>Suggested - Investing Basics</Text>
           </View>
           <View
             style={{
@@ -246,7 +247,7 @@ const LearningCentral = ({theme, navigation}) => {
             </ScrollView>
           </View>
           <View style={styles.rowLabelContainer}>
-            <Text style={styles.rowLabel}>Stock Trading</Text>
+            <Text style={styles.rowLabel}>Suggested - Stock Trading</Text>
           </View>
           <View style={{flexDirection: 'row', marginTop: 24}}>
             <ScrollView
@@ -285,7 +286,7 @@ const LearningCentral = ({theme, navigation}) => {
           </View>
 
           <View style={styles.rowLabelContainer}>
-            <Text style={styles.rowLabel}>Financial Planning</Text>
+            <Text style={styles.rowLabel}>Suggested - Financial Planning</Text>
           </View>
           <View style={{flexDirection: 'row', marginTop: 24}}>
             <ScrollView

@@ -39,9 +39,9 @@ const wait = timeout => {
 const summonsConfig = {
   backgroundGradientFrom: '#2222ff',
   backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: '#2222FF',
+  backgroundGradientTo: '#1111FF',
   backgroundGradientToOpacity: 0.8, //0.5,
-  color: (opacity = 1) => '#2222ff', //'#023047',
+  color: (opacity = 1) => '#023047',
   labelColor: (opacity = 1) => '#fff',
   strokeWidth: 2, // optional, default 3
   barPercentage: 2.5,
@@ -49,7 +49,7 @@ const summonsConfig = {
   decimalPlaces: 0,
 };
 
-const BarChartScreen = ({theme}) => {
+const BarChartScreen = ({theme, navigation}) => {
   const {colors, fonts} = theme;
   const screenWidth = Dimensions.get('window').width;
 
@@ -103,8 +103,11 @@ const BarChartScreen = ({theme}) => {
   }, [loadDataCallback]);
 
   useEffect(() => {
-    loadDataCallback();
-  }, [loadDataCallback]);
+    const unsubscribe = navigation.addListener('focus', () =>
+      loadDataCallback(),
+    );
+    return () => unsubscribe;
+  }, [loadDataCallback, navigation]);
 
   const hasByTransactionTypes = byTransactionTypes.length > 0;
   const hasMonthlyIncome = monthlyIncome.length > 0;

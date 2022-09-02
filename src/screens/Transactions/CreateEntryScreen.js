@@ -133,7 +133,10 @@ const CreateEntryScreen = ({navigation, theme}) => {
     try {
       // if (transactionType === null && amount < 1) {
       if (!canCreate) {
-        Alert.alert('Warning!', 'Input at least category and amount');
+        Alert.alert(
+          'Warning!',
+          'You must enter (at least) category and amount',
+        );
       } else {
         setEventLoading(true);
         const db = await getDBConnection();
@@ -206,14 +209,6 @@ const CreateEntryScreen = ({navigation, theme}) => {
   const canCreate = amount > 0 && transactionType !== null;
 
   return (
-    // <ImageBackground
-    //   source={{
-    //     uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
-    //   }}
-    //   resizeMode={'cover'}
-    //   style={{
-    //     flex: 1,
-    //   }}>
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <FieldContainer>
@@ -237,23 +232,6 @@ const CreateEntryScreen = ({navigation, theme}) => {
 
         <View style={{padding: 8, marginTop: '10%'}}>
           <FieldContainer>
-            {/* <Text style={{fontSize: 21, color: '#fff'}}>Type</Text> */}
-            {/* <DropDown
-              mode={'flat'}
-              label={'Category'}
-              // mode={'outlined'}
-              value={transactionType}
-              setValue={setTransactionType}
-              list={transactionTypes}
-              visible={showDropDown}
-              showDropDown={() => setShowDropDown(true)}
-              onDismiss={() => setShowDropDown(false)}
-              inputProps={{
-                right: <TextInput.Icon name={'menu-down'} />,
-                theme: {roundness: 0},
-                style: styles.dropdown,
-              }}
-            /> */}
             <CustomDropDown
               label={!selected ? 'Select category' : selected.label}
               data={transactionTypes}

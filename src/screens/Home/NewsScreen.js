@@ -33,7 +33,7 @@ const NewsScreen = ({theme, navigation}) => {
   const renderItem = item => (
     <View style={{padding: 12}}>
       <View>
-        <Text style={{fontSize: 16, padding: 6, color: '#ffffff'}}>
+        <Text style={{fontSize: 16, padding: 6, color: '#5184ad'}}>
           {item.title}
           <View style={{paddingLeft: 6}}>
             <Text
@@ -42,13 +42,13 @@ const NewsScreen = ({theme, navigation}) => {
                   articleLink: item.link,
                 })
               }
-              style={{fontSize: 12, color: '#ff0000'}}>
+              style={{fontSize: 18, paddingLeft: 4, top: 6, color: '#6666ff'}}>
               READ...
             </Text>
           </View>
         </Text>
       </View>
-      <Text style={{fontSize: 12, padding: 6, color: '#ffffff'}}>
+      <Text style={{fontSize: 12, padding: 6, color: '#aaabad'}}>
         Source: {item.source}
       </Text>
     </View>
@@ -82,12 +82,13 @@ const NewsScreen = ({theme, navigation}) => {
   }, []);
 
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
-      }}
-      resizeMode="cover"
-      style={{flex: 1}}>
+    // <View
+    //   source={{
+    //     uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGH6pNUqtl6T7TvQGZPgVAZEJtuOxoGcj3A&usqp=CAU',
+    //   }}
+    //   resizeMode="cover"
+    //   style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
       {loading ? (
         <ActivityIndicator
           size={'large'}
@@ -102,7 +103,7 @@ const NewsScreen = ({theme, navigation}) => {
           ItemSeparatorComponent={Divider}
         />
       )}
-    </ImageBackground>
+    </View>
   );
 };
 

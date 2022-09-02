@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const LandingScreen = ({theme}) => {
+const LandingScreen = ({theme, navigation}) => {
   const [monthlyIncome, setMonthlyIncome] = useState([]);
   const [monthlyExpense, setMonthlyExpense] = useState([]);
   const [monthlySavings, setMonthlySavings] = useState([]);
@@ -97,8 +97,11 @@ const LandingScreen = ({theme}) => {
   }, []);
 
   useEffect(() => {
-    loadDataCallback();
-  }, [loadDataCallback]);
+    const unsubscribe = navigation.addListener('focus', () =>
+      loadDataCallback(),
+    );
+    return () => unsubscribe;
+  }, [loadDataCallback, navigation]);
 
   const hasMonthlyExpenses = monthlyExpense.length > 0;
   const hasMonthlyIncome = monthlyIncome.length > 0;
@@ -188,7 +191,7 @@ const LandingScreen = ({theme}) => {
       accessor={'value'}
       backgroundColor={'transparent'}
       paddingLeft={'9'}
-      center={[10, 4]}
+      center={[10, 0]}
     />
   );
   const ComponentTwo = () => (
@@ -259,7 +262,9 @@ const LandingScreen = ({theme}) => {
               ? `${thisMonth} overview`
               : `No data for ${thisMonth}`}
           </Text>
-          <Text style={{fontSize: 16, left: '10%'}}>Pull to refresh</Text>
+          {!hasCurrentMonthData && (
+            <Text style={{left: '10%'}}>Pull to refresh</Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
