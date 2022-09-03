@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   pieContainer: {
-    height: '40%', //'45%',
+    height: '48%',
     backgroundColor: '#7788ff',
     borderRadius: 24,
     marginLeft: 8,
@@ -152,19 +152,13 @@ const LandingScreen = ({theme, navigation}) => {
     console.log('All names array: ', allNamesArray);
     setHasCurrentMonthData(allMonthsArray.includes(d1));
     console.log('d1: ', d1);
-    // console.log('split-d1 ', d1.split('-')[0]);
-
-    // console.log('split-d1 num ', parseInt(d1.split('-')[0], 10));
-
-    // console.log('Includes?: ', allMonthsArray.includes(d1));
     setThisMonth(monthNames.get(parseInt(d1.split('-')[0], 10)));
 
     console.log('Month: ', monthsArray);
     console.log('All Data: ', allData);
 
     const chosen = allData.filter(v => v.label === d1);
-    //  chosen.map(({label}) => console.log(`Labels: ${label}`));
-    //  chosen.map(({color}) => console.log(`Colours: ${color}`));
+
     setPieData(chosen);
     console.log('All Pie Chosen Values: ', chosen);
   }, [monthlyExpense, monthlyIncome, monthlyInvestments, monthlySavings]);
@@ -178,40 +172,6 @@ const LandingScreen = ({theme, navigation}) => {
   useEffect(() => {
     pullLatestData();
   }, [pullLatestData]);
-
-  const [showOne, setShowOne] = useState(true);
-  const [showTwo, setShowTwo] = useState(false);
-
-  const ComponentOne = () => (
-    <PieChart
-      data={pieData}
-      width={screenWidth}
-      height={250}
-      chartConfig={chartConfig}
-      accessor={'value'}
-      backgroundColor={'transparent'}
-      paddingLeft={'9'}
-      center={[10, 0]}
-    />
-  );
-  const ComponentTwo = () => (
-    <View
-      style={{
-        height: 250,
-        width: screenWidth,
-        backgroundColor: '#7777ff',
-      }}
-    />
-  );
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      // showOne === true ? setShowOne(false) : setShowOne(true);
-      //  showTwo === false ? setShowTwo(true) : setShowTwo(false);
-    }, 6000);
-
-    return () => clearInterval(intervalId);
-  }, [showOne, showTwo]);
 
   return (
     <SafeAreaView style={styles.landingContainer}>
@@ -232,13 +192,23 @@ const LandingScreen = ({theme, navigation}) => {
             color: '#4444ff',
             fontSize: 70,
             fontWeight: '200',
+            fontFamily: 'Ubuntu-Regular',
           }}>
           qobo
         </Text>
 
         <View style={styles.pieContainer}>
           {hasCurrentMonthData ? (
-            (showOne && ComponentOne()) || (showTwo && ComponentTwo())
+            <PieChart
+              data={pieData}
+              width={screenWidth}
+              height={250}
+              chartConfig={chartConfig}
+              accessor={'value'}
+              backgroundColor={'transparent'}
+              paddingLeft={'9'}
+              center={[10, -8]}
+            />
           ) : (
             <View
               style={{
@@ -247,7 +217,7 @@ const LandingScreen = ({theme, navigation}) => {
                 borderRadius: 110,
                 margin: 12,
                 alignSelf: 'center',
-                backgroundColor: 'gray',
+                backgroundColor: '#c4c4cc',
               }}
             />
           )}
@@ -256,6 +226,7 @@ const LandingScreen = ({theme, navigation}) => {
               color: '#5555ff',
               fontSize: 21,
               fontWeight: 'bold',
+              fontFamily: 'Ubuntu-Light',
               left: 32,
             }}>
             {hasCurrentMonthData

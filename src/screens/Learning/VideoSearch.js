@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {
   FlatList,
   Image,
-  Keyboard,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -24,6 +22,7 @@ const styles = StyleSheet.create({
     padding: 8,
     color: '#aaabad',
     fontSize: 16,
+    fontFamily: 'Ubuntu-Light',
     textAlign: 'auto',
   },
   dataPlaceholderContainer: {
@@ -43,6 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 6,
+    bottom: 8,
   },
   searchBar: {
     marginLeft: '5%',
@@ -68,21 +68,16 @@ const styles = StyleSheet.create({
   thumbnailContainer: {
     height: 80,
     width: 90,
-    right: 0,
-    left: 4,
-    alignSelf: 'flex-end',
     borderRadius: 10,
+    position: 'absolute',
+    marginLeft: '95%',
   },
   titleDesc: {
     paddingRight: 16,
   },
 });
 
-const VideoSearch = ({navigation: {goBack}}) => {
-  const [searchPhrase, setSearchPhrase] = useState('');
-  const [showIcons, setShowIcons] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [todos, setTodos] = useState([]);
+const VideoSearch = ({navigation}) => {
   const [apiData, setApiData] = useState([]);
   const [input, setInput] = useState('');
 
@@ -110,14 +105,30 @@ const VideoSearch = ({navigation: {goBack}}) => {
     }
   };
 
-  const str = [
+  const seoArray = [
+    'investment management',
+    'loans',
+    'mortgage',
+    'financial services',
+    'life insurance',
+    'personal loan',
+    'investment planning',
+    'investment bank',
+    'mutual funds',
+    'wealth management',
+    'financial advice',
+    'financial advisor',
+    'stock exchange',
+    'financial markets',
+    'budget',
+    'bonds',
+    'electronic wallet',
     'bitcoin',
     'crypto',
     'ethereum',
     'financial',
     'finance',
-    'funds',
-    'fund',
+    'money fund',
     'funding',
     'money market',
     'pension',
@@ -135,7 +146,7 @@ const VideoSearch = ({navigation: {goBack}}) => {
     if (text.length < 2) {
       return setApiData([]);
     }
-    if (areWordsInInput(text.toLowerCase(), str)) {
+    if (areWordsInInput(text.toLowerCase(), seoArray)) {
       searchYouTube(text).catch(e => console.log(e));
     }
   };
@@ -144,17 +155,39 @@ const VideoSearch = ({navigation: {goBack}}) => {
     <View style={styles.itemContainer}>
       <View style={{flexDirection: 'row'}}>
         <View style={styles.titleDesc}>
-          <Text numberOfLines={2} style={{fontSize: 21, color: '#8888ff'}}>
+          <Text
+            onPress={() =>
+              navigation.navigate('VideoPlayer', {
+                link: item.url,
+              })
+            }
+            numberOfLines={2}
+            style={{fontSize: 18, fontFamily: 'Ubuntu-Bold', color: '#8888ff'}}>
             {item.title}
           </Text>
           <View style={{paddingTop: 6}}>
-            <Text style={{fontSize: 12, paddingRight: 8}}>
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: 'Ubuntu-Regular',
+                paddingRight: 8,
+              }}>
               by: {item.channel.name}
             </Text>
-            <Text style={{fontSize: 12, paddingRight: 8}}>
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: 'Ubuntu-Regular',
+                paddingRight: 8,
+              }}>
               duration: {new Date(item.duration).toISOString().slice(11, 19)}
             </Text>
-            <Text style={{fontSize: 12, paddingRight: 8}}>
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: 'Ubuntu-Regular',
+                paddingRight: 8,
+              }}>
               uploaded: {item.uploadedAt}
             </Text>
           </View>
@@ -177,7 +210,7 @@ const VideoSearch = ({navigation: {goBack}}) => {
             name="arrow-back"
             size={24}
             // color="#4444ff"
-            onPress={() => goBack()}
+            onPress={() => navigation.goBack()}
           />
         </View>
         <View style={styles.textInputContainer}>

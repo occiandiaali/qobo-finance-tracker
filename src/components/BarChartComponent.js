@@ -53,7 +53,10 @@ function BarChartComponent({title, fillShadowGradient, data}) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={{color: '#4444ff', fontSize: 18}}>{title}</Text>
+        <Text
+          style={{color: '#4444ff', fontFamily: 'Ubuntu-Bold', fontSize: 18}}>
+          {title}
+        </Text>
       </View>
       <BarChart
         data={chartData}

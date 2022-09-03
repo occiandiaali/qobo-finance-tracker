@@ -168,6 +168,7 @@ const BarChartScreen = ({theme, navigation}) => {
                 style={{
                   color: '#4444ff',
                   fontSize: 18,
+                  fontFamily: 'Ubuntu-Bold',
                   alignSelf: 'center',
                   paddingBottom: 8,
                 }}>

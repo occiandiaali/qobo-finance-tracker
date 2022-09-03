@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   rowLabel: {
     fontSize: 21,
     fontWeight: 'bold',
+    fontFamily: 'Ubuntu-Bold',
     color: '#4444ff',
   },
   rowLabelContainer: {
@@ -229,18 +230,8 @@ const LearningCentral = ({theme, navigation}) => {
                         width: 230,
                         height: 250,
                         borderRadius: 20,
-                      }}>
-                      <Text
-                        style={{
-                          color: 'red',
-                          alignSelf: 'center',
-                          marginTop: '80%',
-                          fontSize: 18,
-                          fontWeight: 'bold',
-                        }}>
-                        {title}
-                      </Text>
-                    </ImageBackground>
+                      }}
+                    />
                   </Pressable>
                 </View>
               ))}

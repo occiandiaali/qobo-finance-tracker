@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 21,
     fontWeight: 'bold',
+    fontFamily: 'Ubuntu-Regular',
   },
   enabledCreate: {
     width: 250,
@@ -67,6 +68,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 21,
     fontWeight: 'bold',
+    fontFamily: 'Ubuntu-Regular',
   },
   input: {
     backgroundColor: '#d7d9d7',
@@ -214,7 +216,13 @@ const CreateEntryScreen = ({navigation, theme}) => {
         <FieldContainer>
           <View style={styles.selectDate}>
             <Pressable onPress={showDatePicker}>
-              <Text style={{color: '#fff', fontSize: 21, fontWeight: 'bold'}}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 21,
+                  fontFamily: 'Ubuntu-Regular',
+                  fontWeight: 'bold',
+                }}>
                 {transactionDate.toDateString().slice(4)}
               </Text>
             </Pressable>

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   dropdown: {
     position: 'absolute',
     backgroundColor: '#9999ff', //'#fff',
-    width: '96%',
+    width: '92%', //'96%',
     height: '50%',
     alignSelf: 'center',
     shadowColor: '#000000',
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   presserText: {
     flex: 1,
     fontSize: 16,
+    fontFamily: 'Ubuntu-Regular',
     paddingLeft: 8,
   },
 });
@@ -51,7 +52,13 @@ const CustomDropDown = ({label, data, onSelect}) => {
 
   const renderItem = ({item}) => (
     <Pressable style={styles.item} onPress={() => onItemPress(item)}>
-      <Text style={{fontSize: 16, fontWeight: '700', color: '#fff'}}>
+      <Text
+        style={{
+          fontSize: 16,
+          fontFamily: 'Ubuntu-Regular',
+          fontWeight: '700',
+          color: '#fff',
+        }}>
         {item.label}
       </Text>
     </Pressable>
