@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   FlatList,
   Image,
   SafeAreaView,
@@ -24,6 +26,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Ubuntu-Light',
     textAlign: 'auto',
+    lineHeight: 21,
   },
   dataPlaceholderContainer: {
     alignSelf: 'center',
@@ -120,8 +123,7 @@ const VideoSearch = ({navigation}) => {
     'financial advisor',
     'stock exchange',
     'financial markets',
-    'budget',
-    'bonds',
+    'financial budget',
     'electronic wallet',
     'bitcoin',
     'crypto',
@@ -133,7 +135,6 @@ const VideoSearch = ({navigation}) => {
     'money market',
     'pension',
     'invest',
-    'investment',
     'stock',
     'trading',
   ];
@@ -215,7 +216,7 @@ const VideoSearch = ({navigation}) => {
         </View>
         <View style={styles.textInputContainer}>
           <TextInput
-            // placeholderTextColor="#9999ff"
+            autoFocus={true}
             placeholder="Search financial videos"
             value={input}
             onChangeText={onChangeTextHandler}
@@ -238,8 +239,31 @@ const VideoSearch = ({navigation}) => {
           />
         </View>
       </View>
-
       <View style={styles.resultContainer}>
+        {input.length < 3 && !seoArray.includes(input) ? (
+          <View style={styles.dataPlaceholderContainer}>
+            <Text style={styles.dataPlaceholder}>
+              Search for videos about financial matters.
+              {'\n'}
+              e.g. "How to invest..", "stock market basics", "pension funds" ...
+            </Text>
+          </View>
+        ) : !apiData.length ? (
+          <ActivityIndicator
+            size={'large'}
+            style={{marginTop: '20%', alignSelf: 'center'}}
+          />
+        ) : (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={apiData}
+            renderItem={({item}) => renderItem(item)}
+            keyExtractor={item => item.id}
+          />
+        )}
+      </View>
+
+      {/* <View style={styles.resultContainer}>
         {!apiData.length ? (
           <View style={styles.dataPlaceholderContainer}>
             <Text style={styles.dataPlaceholder}>
@@ -256,7 +280,7 @@ const VideoSearch = ({navigation}) => {
             keyExtractor={item => item.id}
           />
         )}
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {
   Dimensions,
-  ImageBackground,
+  Image,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -148,79 +148,112 @@ const BarChartScreen = ({theme, navigation}) => {
   //   labels: monthlyIncome.map(item => item.label),
   //   datasets,
   // };
+  const noData =
+    !hasSavingsInvestment &&
+    !hasMonthlyExpense &&
+    !hasMonthlyIncome &&
+    !hasMonthlyInvestments &&
+    !hasMonthlySavings;
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              colors={['#fff']}
-              progressBackgroundColor={'#8888ff'}
-              refreshing={refreshing}
-              onRefresh={onRefresh}
+        {noData ? (
+          <View
+            style={{
+              width: 250,
+              height: 320,
+              backgroundColor: '#9999ff',
+              alignSelf: 'center',
+              marginTop: '25%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderBottomLeftRadius: 15,
+              borderBottomRightRadius: 15,
+            }}>
+            <Image
+              source={{
+                uri: 'https://img.freepik.com/free-vector/illustration-mobile-phone_53876-37006.jpg?w=740&t=st=1662321316~exp=1662321916~hmac=a741be58c4dc14782a427909f99b1a976b547fb54fa63e4e9d14378daf1d495b',
+              }}
+              style={{width: 250, height: 250}}
             />
-          }>
-          {hasSavingsInvestment && (
-            <>
-              <Text
-                style={{
-                  color: '#4444ff',
-                  fontSize: 18,
-                  fontFamily: 'Ubuntu-Bold',
-                  alignSelf: 'center',
-                  paddingBottom: 8,
-                }}>
-                {'Annual Savings vs. Investments'}
-              </Text>
-              <StackedBarChart
-                style={{
-                  paddingBottom: 16,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                data={summonsData}
-                width={screenWidth}
-                height={220}
-                chartConfig={summonsConfig}
-                //withHorizontalLabels={false}
+            <Text>Image by rawpixel.com on Freepik</Text>
+            <Text
+              style={{fontSize: 21, fontFamily: 'Ubuntu-Light', color: '#fff'}}>
+              No transaction data to show yet.
+            </Text>
+          </View>
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                colors={['#fff']}
+                progressBackgroundColor={'#8888ff'}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
               />
-            </>
-          )}
-          {hasMonthlyExpense && (
-            <BarChartComponent
-              title="Monthly Expense"
-              data={monthlyExpense}
-              fillShadowGradient="#00b4d8"
-              color="#0077b6"
-            />
-          )}
-          {hasMonthlyIncome && (
-            <BarChartComponent
-              title="Monthly Income"
-              data={monthlyIncome}
-              fillShadowGradient="#DF5353"
-              color="#d62828"
-            />
-          )}
-          {hasMonthlySavings && (
-            <BarChartComponent
-              title="Monthly Savings"
-              data={monthlySavings}
-              fillShadowGradient="#ac3363"
-              color="#a32626"
-            />
-          )}
-          {hasMonthlyInvestments && (
-            <BarChartComponent
-              title="Monthly Investments"
-              data={monthlyInvestments}
-              fillShadowGradient="#87fa7d"
-              color="#3a8505"
-            />
-          )}
-        </ScrollView>
+            }>
+            {hasSavingsInvestment && (
+              <>
+                <Text
+                  style={{
+                    color: '#4444ff',
+                    fontSize: 18,
+                    fontFamily: 'Ubuntu-Bold',
+                    alignSelf: 'center',
+                    paddingBottom: 8,
+                  }}>
+                  {'Annual Savings vs. Investments'}
+                </Text>
+                <StackedBarChart
+                  style={{
+                    paddingBottom: 16,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  data={summonsData}
+                  width={screenWidth}
+                  height={220}
+                  chartConfig={summonsConfig}
+                  //withHorizontalLabels={false}
+                />
+              </>
+            )}
+            {hasMonthlyExpense && (
+              <BarChartComponent
+                title="Monthly Expense"
+                data={monthlyExpense}
+                fillShadowGradient="#00b4d8"
+                color="#0077b6"
+              />
+            )}
+            {hasMonthlyIncome && (
+              <BarChartComponent
+                title="Monthly Income"
+                data={monthlyIncome}
+                fillShadowGradient="#DF5353"
+                color="#d62828"
+              />
+            )}
+            {hasMonthlySavings && (
+              <BarChartComponent
+                title="Monthly Savings"
+                data={monthlySavings}
+                fillShadowGradient="#ac3363"
+                color="#a32626"
+              />
+            )}
+            {hasMonthlyInvestments && (
+              <BarChartComponent
+                title="Monthly Investments"
+                data={monthlyInvestments}
+                fillShadowGradient="#87fa7d"
+                color="#3a8505"
+              />
+            )}
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );

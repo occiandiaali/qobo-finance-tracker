@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Alert,
   Dimensions,
+  Platform,
   StyleSheet,
   View,
 } from 'react-native';
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
   webViewContainer: {
     flex: 1,
     width: screenWidth,
+    backgroundColor: '#fff',
   },
 });
 
@@ -40,10 +42,18 @@ const VideoPlayer = ({route}) => {
         renderLoading={LoadingIndicatorView}
         renderError={LoadingErrorView}
         startInLoadingState={true}
-        mediaPlaybackRequiresUserAction={false}
+        allowsFullscreenVideo={true}
+        mediaPlaybackRequiresUserAction={
+          Platform.OS !== 'android' || Platform.Version >= 17
+            ? false
+            : undefined
+        }
         containerStyle={{flex: 1, width: screenWidth}}
+        androidLayerType="hardware"
+        mixedContentMode="always"
+        userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
         source={{
-          html: `<html><body><iframe width="100%" height="100%" src=${embedable}?autoplay=1&wmode=opaque&yt:crop=16:9 frameborder="0" allowfullscreen allow="autoplay"></iframe></body></html>`,
+          html: `<html><body><iframe width=100% height=100% src=${embedable}?autoplay=1&mute=1 frameborder='0'  allow='autoplay' allowfullscreen></iframe></body></html>`,
         }}
       />
     </View>
