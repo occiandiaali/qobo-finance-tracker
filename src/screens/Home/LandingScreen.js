@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginLeft: 8,
     marginRight: 8,
-    marginTop: '35%',
+    marginTop: '15%', //'35%',
   },
 });
 
@@ -185,7 +185,7 @@ const LandingScreen = ({theme, navigation}) => {
             onRefresh={onRefresh}
           />
         }>
-        <Text
+        {/* <Text
           style={{
             alignSelf: 'center',
             top: '5%',
@@ -195,8 +195,13 @@ const LandingScreen = ({theme, navigation}) => {
             fontFamily: 'Ubuntu-Regular',
           }}>
           qobo
-        </Text>
-
+        </Text> */}
+        <View style={{top: 36, justifyContent: 'center', alignItems: 'center'}}>
+          <Image
+            source={require('../../assets/images/qobo_snap.png')}
+            style={{width: 250, height: 160}}
+          />
+        </View>
         <View style={styles.pieContainer}>
           {hasCurrentMonthData ? (
             <PieChart

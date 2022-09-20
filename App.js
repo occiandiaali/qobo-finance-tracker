@@ -14,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import NewsScreen from './src/screens/Home/NewsScreen';
 import NewsDetailScreen from './src/screens/Home/NewsDetailScreen';
+import Splasher from './src/screens/Splash/Splasher';
 import VideoPlayer from './src/screens/Learning/VideoPlayer';
 import VideoSearch from './src/screens/Learning/VideoSearch';
 
@@ -139,7 +140,12 @@ export default function App() {
     <PaperProvider theme={theme}>
       <NavigationContainer>
         <StatusBar backgroundColor="rgba(50, 50, 255, 0.5)" />
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Splash">
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Splash"
+            component={Splasher}
+          />
           <Stack.Screen
             options={{headerShown: false}}
             name="Landing"

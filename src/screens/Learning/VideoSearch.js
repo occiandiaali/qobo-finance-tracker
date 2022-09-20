@@ -171,6 +171,7 @@ const VideoSearch = ({navigation}) => {
               style={{
                 fontSize: 12,
                 fontFamily: 'Ubuntu-Regular',
+                fontWeight: '800',
                 paddingRight: 8,
               }}>
               by: {item.channel.name}
@@ -179,6 +180,7 @@ const VideoSearch = ({navigation}) => {
               style={{
                 fontSize: 12,
                 fontFamily: 'Ubuntu-Regular',
+                fontWeight: '800',
                 paddingRight: 8,
               }}>
               duration: {new Date(item.duration).toISOString().slice(11, 19)}
@@ -187,6 +189,7 @@ const VideoSearch = ({navigation}) => {
               style={{
                 fontSize: 12,
                 fontFamily: 'Ubuntu-Regular',
+                fontWeight: '800',
                 paddingRight: 8,
               }}>
               uploaded: {item.uploadedAt}
