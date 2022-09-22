@@ -17,8 +17,13 @@ const image = {
 const NotificationScreen = ({theme}) => {
   return (
     <View style={styles.container}>
-      <Image source={image} style={styles.image} />
-      <Text style={styles.text}>Success!</Text>
+      {/* <Image source={image} style={styles.image} />
+      <Text style={styles.text}>Success!</Text> */}
+      <Image
+        source={require('../../assets/images/success.png')}
+        style={styles.image}
+      />
+      <Text style={styles.text}>Sweet!{'\n'}You tracked a transaction!</Text>
     </View>
   );
 };
@@ -31,18 +36,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   image: {
-    //
-    height: 400,
-    width: 400,
+    height: 350,
+    width: 350,
     borderRadius: 150,
     alignSelf: 'center',
     marginTop: '15%',
   },
   text: {
+    textAlign: 'center',
     alignSelf: 'center',
     marginTop: 24,
-    fontSize: 34,
-    fontWeight: 'bold',
+    fontSize: 24,
+    // fontWeight: 'bold',
+    fontFamily: 'Ubuntu-Regular',
     color: '#6666ff',
   },
 });

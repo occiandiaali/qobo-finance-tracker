@@ -161,25 +161,34 @@ const BarChartScreen = ({theme, navigation}) => {
         {noData ? (
           <View
             style={{
-              width: 250,
+              width: '100%', //250,
               height: 320,
-              backgroundColor: '#9999ff',
+              // backgroundColor: '#9999ff',
               alignSelf: 'center',
               marginTop: '25%',
               justifyContent: 'center',
               alignItems: 'center',
-              borderBottomLeftRadius: 15,
-              borderBottomRightRadius: 15,
+              // borderBottomLeftRadius: 15,
+              // borderBottomRightRadius: 15,
             }}>
             <Image
+              source={require('../../assets/images/no_data.png')}
+              style={{width: 250, height: 250}}
+            />
+            {/* <Image
               source={{
                 uri: 'https://img.freepik.com/free-vector/illustration-mobile-phone_53876-37006.jpg?w=740&t=st=1662321316~exp=1662321916~hmac=a741be58c4dc14782a427909f99b1a976b547fb54fa63e4e9d14378daf1d495b',
               }}
               style={{width: 250, height: 250}}
             />
-            <Text>Image by rawpixel.com on Freepik</Text>
+            <Text>Image by rawpixel.com on Freepik</Text> */}
             <Text
-              style={{fontSize: 21, fontFamily: 'Ubuntu-Light', color: '#fff'}}>
+              style={{
+                fontSize: 24,
+                fontFamily: 'Ubuntu-Light',
+                color: '#9999ff',
+                top: 16,
+              }}>
               No transaction data to show yet.
             </Text>
           </View>

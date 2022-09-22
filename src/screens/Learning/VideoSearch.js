@@ -24,13 +24,14 @@ const styles = StyleSheet.create({
     padding: 8,
     color: '#aaabad',
     fontSize: 16,
-    fontFamily: 'Ubuntu-Light',
+    fontFamily: 'Ubuntu-Bold',
     textAlign: 'auto',
     lineHeight: 21,
+    top: 24,
   },
   dataPlaceholderContainer: {
     alignSelf: 'center',
-    marginTop: '50%',
+    marginTop: '10%', //'50%',
   },
   itemContainer: {
     flex: 1,
@@ -40,6 +41,14 @@ const styles = StyleSheet.create({
     borderBottomColor: '#aaabad',
     borderBottomWidth: 0.2,
     marginBottom: 8,
+  },
+  placeholderImg: {
+    width: 350,
+    height: 350,
+    top: 8,
+    borderRadius: 35,
+    // bottom: 16,
+    // alignSelf: 'center',
   },
   resultContainer: {
     flex: 1,
@@ -263,6 +272,10 @@ const VideoSearch = ({navigation}) => {
       <View style={styles.resultContainer}>
         {input.length < 3 && !seoArray.includes(input) ? (
           <View style={styles.dataPlaceholderContainer}>
+            <Image
+              source={require('../../assets/images/learning_videos.png')}
+              style={styles.placeholderImg}
+            />
             <Text style={styles.dataPlaceholder}>
               Search for videos about financial matters.
               {'\n'}

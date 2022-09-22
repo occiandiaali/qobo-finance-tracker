@@ -57,6 +57,11 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginTop: '15%', //'35%',
   },
+  placeholderImage: {
+    width: 220,
+    height: 250,
+    alignSelf: 'center',
+  },
 });
 
 const LandingScreen = ({theme, navigation}) => {
@@ -215,15 +220,19 @@ const LandingScreen = ({theme, navigation}) => {
               center={[10, -8]}
             />
           ) : (
-            <View
-              style={{
-                width: 220,
-                height: 220,
-                borderRadius: 110,
-                margin: 12,
-                alignSelf: 'center',
-                backgroundColor: '#c4c4cc',
-              }}
+            // <View
+            //   style={{
+            //     width: 220,
+            //     height: 220,
+            //     borderRadius: 110,
+            //     margin: 12,
+            //     alignSelf: 'center',
+            //     backgroundColor: '#c4c4cc',
+            //   }}
+            // />
+            <Image
+              source={require('../../assets/images/blank_canvas.png')}
+              style={styles.placeholderImage}
             />
           )}
           <Text
