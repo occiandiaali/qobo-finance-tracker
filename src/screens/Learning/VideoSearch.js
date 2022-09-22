@@ -64,9 +64,9 @@ const styles = StyleSheet.create({
     borderRadius: 36,
   },
   thumbnail: {
-    height: 80,
+    height: 85,
     width: 90,
-    borderRadius: 10,
+    borderRadius: 8,
   },
   thumbnailContainer: {
     height: 80,
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     position: 'absolute',
     marginLeft: '95%',
+    bottom: 4,
   },
   titleDesc: {
     paddingRight: 16,
@@ -94,16 +95,19 @@ const VideoSearch = ({navigation}) => {
         'X-RapidAPI-Host': 'simple-youtube-search.p.rapidapi.com',
       },
     };
+    let responseClone;
     try {
       const response = await fetch(
         `https://simple-youtube-search.p.rapidapi.com/search?query=${q}`,
         options,
       );
       const body = await response.json();
+      responseClone = response.clone();
       // setApiData(body.item.filter(item => item.type === 'video'));
       console.log('ApiData ', apiData);
       return setApiData(body.results);
     } catch (error) {
+      console.log('Clone err: ', responseClone.text());
       console.error(error);
     }
   };
@@ -135,6 +139,7 @@ const VideoSearch = ({navigation}) => {
     'money market',
     'pension',
     'invest',
+    'retirement plan',
     'stock',
     'trading',
   ];
@@ -196,11 +201,24 @@ const VideoSearch = ({navigation}) => {
             </Text>
           </View>
         </View>
-        <View style={styles.thumbnailContainer}>
+        {/* <View style={styles.thumbnailContainer}>
           <Image
             source={{uri: `${item.thumbnail.url}`}}
             style={styles.thumbnail}
           />
+        </View> */}
+        <View style={styles.thumbnailContainer}>
+          {item.thumbnail.url === null ? (
+            <ActivityIndicator
+              size={'large'}
+              style={{marginTop: '20%', alignSelf: 'center'}}
+            />
+          ) : (
+            <Image
+              source={{uri: `${item.thumbnail.url}`}}
+              style={styles.thumbnail}
+            />
+          )}
         </View>
       </View>
     </View>
