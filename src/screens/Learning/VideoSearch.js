@@ -42,6 +42,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.2,
     marginBottom: 8,
   },
+  loadingText: {
+    fontFamily: 'Ubuntu-Regular',
+    fontSize: 20,
+    alignSelf: 'center',
+    marginTop: 8,
+    textAlign: 'center',
+  },
   placeholderImg: {
     width: 350,
     height: 350,
@@ -147,7 +154,10 @@ const VideoSearch = ({navigation}) => {
     'funding',
     'money market',
     'pension',
+    'property insurance',
+    'property investment',
     'invest',
+    'real estate',
     'retirement plan',
     'stock',
     'trading',
@@ -283,10 +293,15 @@ const VideoSearch = ({navigation}) => {
             </Text>
           </View>
         ) : !apiData.length ? (
-          <ActivityIndicator
-            size={'large'}
-            style={{marginTop: '20%', alignSelf: 'center'}}
-          />
+          <>
+            <ActivityIndicator
+              size={'large'}
+              style={{marginTop: '20%', alignSelf: 'center'}}
+            />
+            <Text style={styles.loadingText}>
+              Trying to find your search...
+            </Text>
+          </>
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}

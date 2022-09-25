@@ -15,6 +15,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {RAPID_API_KEY} from '@env';
 
+const styles = StyleSheet.create({
+  loadingText: {
+    fontFamily: 'Ubuntu-Regular',
+    fontSize: 20,
+    alignSelf: 'center',
+    marginTop: 8,
+  },
+});
+
 const Divider = () => (
   <View
     style={{
@@ -90,10 +99,15 @@ const NewsScreen = ({theme, navigation}) => {
     //   style={{flex: 1}}>
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       {loading ? (
-        <ActivityIndicator
-          size={'large'}
-          style={{color: '#3333ff', alignSelf: 'center', marginTop: '50%'}}
-        />
+        <>
+          <ActivityIndicator
+            size={'large'}
+            style={{color: '#3333ff', alignSelf: 'center', marginTop: '50%'}}
+          />
+          <Text style={styles.loadingText}>
+            Please wait, while we load stories...
+          </Text>
+        </>
       ) : (
         <FlatList
           showsVerticalScrollIndicator={false}
