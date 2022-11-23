@@ -1,4 +1,9 @@
-## qobo - Personal finance tracker
+## qobo - Personal finance tracker  
+
+## Android demo  
+
+https://user-images.githubusercontent.com/40769994/203627693-77550499-c6ba-474a-8645-81fe4ea26f99.mp4
+
 
 ## Android screenshots
 ![qobo-landing-full](https://user-images.githubusercontent.com/40769994/188289334-1f817403-604e-4b39-9fa7-392773093172.png)
